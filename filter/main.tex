@@ -351,7 +351,7 @@ and find
 \end{equation}
 \solution From \eqref{eq:z_trans},
 \begin{align}
-{\mathcal {Z}}\{x(n-k)\} &=\sum _{n=-\infty }^{\infty }x(n-1)z^{-n}
+{\mathcal {Z}}\{x(n-1)\} &=\sum _{n=-\infty }^{\infty }x(n-1)z^{-n}
 \\
 &=\sum _{n=-\infty }^{\infty }x(n)z^{-n-1} = z^{-1}\sum _{n=-\infty }^{\infty }x(n)z^{-n}
 \end{align}
@@ -526,7 +526,7 @@ wget https://raw.githubusercontent.com/Sigma1084/EE3900/master/filter/code/hndef
 %
 \begin{equation}
 \label{eq:convolution}
-y(n) = x(n)*h(n) = \sum_{n=-\infty}^{\infty}x(k)h(n-k)
+y(n) = x(n)*h(n) = \sum_{k=-\infty}^{\infty}x(k)h(n-k)
 \end{equation}
 %
 Comment. The operation in \eqref{eq:convolution} is known as
@@ -549,9 +549,16 @@ wget https://raw.githubusercontent.com/Sigma1084/EE3900/master/filter/code/yncon
 
 \item Show that
 \begin{equation}
-y(n) =  \sum_{n=-\infty}^{\infty}x(n-k)h(k)
+\label{eq:yn}
+y(n) =  \sum_{k=-\infty}^{\infty}x(n-k)h(k)
 \end{equation}
 \end{enumerate}
+
+\solution Substituting k = n - k in \eqref{eq:yn}, we get
+\begin{equation}
+y(n) =  \sum_{n-k=-\infty}^{\infty}x(k)h(n-k)
+\end{equation}
+This is clearly equivalent to \eqref{eq:convolution}
 
 %
 \section{DFT and FFT}
