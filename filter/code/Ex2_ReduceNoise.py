@@ -11,7 +11,7 @@ sample_freq = fs
 order = 4
 
 # cutoff frequency 4kHz
-cutoff_freq=4000.0
+cutoff_freq = 4000.0
 
 # digital frequency
 Wn = 2 * cutoff_freq / sample_freq
