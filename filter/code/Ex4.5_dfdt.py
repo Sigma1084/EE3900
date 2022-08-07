@@ -30,4 +30,4 @@ plt.savefig('../figs/dtft.pdf')
 plt.savefig('../figs/dtft.eps')
 # subprocess.run(shlex.split("termux-open ../figs/dtft.pdf"))
 # else
-# plt.show()
+plt.show()
