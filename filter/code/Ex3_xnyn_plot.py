@@ -7,11 +7,7 @@ import matplotlib.pyplot as plt
 # end if
 
 x = [1.0, 2.0, 3.0, 4.0, 2.0, 1.0]
-
-with open("Ex3_output.txt") as f:
-    y = f.readline()
-    y = list(map(float, y.strip().split(' ')))
-
+y = np.loadtxt('Ex3_output.txt', dtype='double')
 k = len(y)
 
 # subplots
@@ -28,8 +24,8 @@ plt.ylabel('$y(n)$')
 plt.grid()  # minor
 
 # # If using termux
-# plt.savefig('../figs/xnyn.pdf')
-# plt.savefig('../figs/xnyn.eps')
+plt.savefig('../figs/xnyn.pdf')
+plt.savefig('../figs/xnyn.eps')
 # # subprocess.run(shlex.split("termux-open ../figs/xnyn.pdf"))
 # # else
 plt.show()
