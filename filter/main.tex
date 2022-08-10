@@ -305,6 +305,7 @@ The output of the python script in Problem \ref{prob:output} is the audio file S
 \section{Difference Equation}
 \begin{enumerate}[label=\thesection.\arabic*,ref=\thesection.\theenumi]
 \item Let
+    \label{def:xn}
 \begin{equation}
 x(n) = \cbrak{\underset{\uparrow}{1},2,3,4,2,1}
 \end{equation}
@@ -330,7 +331,14 @@ wget https://github.com/Sigma1084/EE3900/raw/master/filter/code/Ex3_xnyn.py
 \label{fig:xnyn}	
 \end{figure}
 
+\item Repeat the above exercise using a C code.
+\solution
+\begin{lstlisting}
+wget https://github.com/Sigma1084/EE3900/raw/master/filer/code/Ex3_xnyn.c
+\end{lstlisting}
+
 \end{enumerate}
+
 \section{$Z$-transform}
 \begin{enumerate}[label=\thesection.\arabic*]
 \item The $Z$-transform of $x(n)$ is defined as
@@ -362,6 +370,19 @@ resulting in \eqref{eq:shift1}. Similarly, it can be shown that
 	{\mathcal {Z}}\{x(n-k)\} = z^{-k}X(z)
 \end{equation}
 
+\item Obtain $X(z)$ for $x(n)$ defined in problem 
+	\ref{def:xn}.
+\solution
+\begin{equation}
+    X(z) =\sum _{n=-\infty }^{\infty }x(n)z^{-n}
+\end{equation}
+Here, we have $x(n) = 0 \ \forall \ n<0$ and $n\geq6$
+\begin{align}
+    & X(z) =\sum _{n=0 }^5x(n)z^{-n} \\
+    \implies & X(z) = 1 + \frac{2}{z} + \frac{3}{z^2} + \frac{4}{z^3} + \frac{2}{z^4} + \frac{1}{z^5} 
+\end{align}
+
+
 \item Find
 %
 \begin{equation}
@@ -377,6 +398,7 @@ Y(z) + \frac{1}{2}z^{-1}Y(z) &= X(z)+z^{-2}X(z)
 \implies \frac{Y(z)}{X(z)} &= \frac{1 + z^{-2}}{1 + \frac{1}{2}z^{-1}}
 \label{eq:freq_resp}
 \end{align}
+
 %
 \item Find the Z transform of 
 \begin{equation}
@@ -433,9 +455,8 @@ a^n & n \ge 0
 \end{cases}
 \end{equation}
 
-\text{Clearly, } \\
 \begin{align}
-U_a(z) & = \sum _{n= 0}^{\infty}z^{-n} . \ a^n
+\implies U_a(z) & = \sum _{n= 0}^{\infty}z^{-n} . \ a^n
 \\
 &=\frac{1}{1-az^{-1}}, \quad \abs{z} > \abs{a}
 \end{align}
@@ -460,6 +481,9 @@ wget https://raw.githubusercontent.com/Sigma1084/EE3900/master/filter/code/dtft.
 \caption{$\abs{H\brak{e^{\j\omega}}}$}
 \label{fig:dtft}
 \end{figure}
+
+\item Express $h(n)$ in terms of $H\brak{e^{\j \omega}}$.
+
 \end{enumerate}
 
 \section{Impulse Response}
