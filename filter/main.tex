@@ -472,8 +472,17 @@ known as the {\em Discret Time Fourier Transform} (DTFT) of $x(n)$.
 \\
 \solution The following code plots Fig. \ref{fig:dtft}.
 \begin{lstlisting}
-wget https://raw.githubusercontent.com/Sigma1084/EE3900/master/filter/code/dtft.py
+wget https://raw.githubusercontent.com/Sigma1084/EE3900/master/filter/code/Ex4.6_dtft.py
 \end{lstlisting}
+\begin{align*}
+	\left|H\brak{e^{\j\omega}}\right| &= \left|\frac{1 + e^{-2\j\omega}}{1 + \frac{1}{2}e^{-\j\omega}}\right| \\
+									  &= \sqrt{\frac{\brak{1 + \cos{2\omega}}^2 + \brak{\sin{2\omega}}^2}{\brak{1 + \frac{1}{2}\cos{\omega}}^2 + \brak{\frac{1}{2}\sin{\omega}}^2}}\\
+									  &= \sqrt{\frac{2\brak{1 + \cos{2\omega}}}{\frac{5}{4} + \cos{\omega}}} \\
+									  &= \sqrt{\frac{2\brak{2\cos^2{\omega}}}{\frac{5}{4} + \cos{\omega}}} \\
+									  &= \frac{4|\cos{\omega}|}{\sqrt{5 + 4\cos{\omega}}}
+\end{align*}
+Fundamental Period is clearly 2$\pi$.
+
 \begin{figure}[!ht]
 \centering
 \includegraphics[width=\columnwidth]{./figs/dtft}
@@ -483,7 +492,45 @@ wget https://raw.githubusercontent.com/Sigma1084/EE3900/master/filter/code/dtft.
 
 \item Express $h(n)$ in terms of $H\brak{e^{\j \omega}}$.
 
+\[
+	H(e^{\j\omega}) &= \sum_{k = -\infty}^{\infty}h(k)e^{-\j\omega k}
+\]
+
+We know that,
+\begin{align*}
+	\int_{-\pi}^{\pi}e^{\j\omega(n - m)}d\omega =
+	\begin{cases}
+		2\pi & n = m \\
+		0 & \textrm{otherwise}
+	\end{cases}
+\end{align*}
+
+Consider the Inverse Discrete Fourier Transform
+
+\begin{align*}
+	&\frac{1}{2\pi}\int_{-\pi}^{\pi}H(e^{\j\omega})e^{j\omega n}d\omega \\
+	&= \frac{1}{2\pi}\int_{-\pi}^{\pi}\sum_{m = -\infty}^{\infty}h(m)e^{\j\omega(n - m)}d\omega \\
+	&= \frac{1}{2\pi}\sum_{m = -\infty}^{\infty}\int_{-\pi}^{\pi}h(m)e^{\j\omega(n - m)}d\omega \\
+	&= \frac{1}{2\pi}2\pi h(n) = h(n)
+\end{align*}
+
+Thus, 
+\begin{align}
+    h(n) &= \frac{1}{2\pi}\int_{-\pi}^{\pi}H(e^{\j\omega})e^{\j\omega n}d\omega
+    \label{eq:idtft}
+\end{align}
+
+Using \eqref{eq:idtft}, 
+
+\begin{align*}
+	h(n) &= \frac{1}{2\pi}\int_{-\pi}^{\pi}\frac{1 + e^{-2\j\omega}}{1 + \frac{1}{2}e^{-\j\omega}}e^{\j\omega n}d\omega
+	\label{eq:idtft}
+\end{align*}
+
+This is solved and expressed as a function of n in 5.1
+
 \end{enumerate}
+
 
 \section{Impulse Response}
 \begin{enumerate}[label=\thesection.\arabic*]
