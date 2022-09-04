@@ -38,7 +38,7 @@
 %\usepackage{iithtlc}
 %\usepackage[framemethod=tikz]{mdframed}
 \usepackage{listings}
-
+% \usepackage{polynom,amsmath,amssymb}
 
 %\usepackage{stmaryrd}
 
@@ -472,7 +472,7 @@ known as the {\em Discret Time Fourier Transform} (DTFT) of $x(n)$.
 \\
 \solution The following code plots Fig. \ref{fig:dtft}.
 \begin{lstlisting}
-wget https://raw.githubusercontent.com/Sigma1084/EE3900/master/filter/code/Ex4.6_dtft.py
+wget https://raw.githubusercontent.com/Sigma1084/EE3900/master/filter/code/Ex4_dtft.py
 \end{lstlisting}
 \begin{align*}
 	\left|H\brak{e^{\j\omega}}\right| &= \left|\frac{1 + e^{-2\j\omega}}{1 + \frac{1}{2}e^{-\j\omega}}\right| \\
@@ -533,7 +533,31 @@ This is solved and expressed as a function of n in 5.1
 
 
 \section{Impulse Response}
+
 \begin{enumerate}[label=\thesection.\arabic*]
+
+\item Using long division, compute $h(n)$ for $n < 5$ from $H(z)$.
+
+\solution We substitute $x := z^{-1}$, and perform long division.
+
+\polylongdiv{1 + x^2}{1 + \frac{1}{2}x}
+
+Thus,
+\begin{align}
+	H(z) &= -4 + 2z^{-1} + \frac{5}{1 + \frac{1}{2}z^{-1}} \\
+		 &= -4 + 2z^{-1} + 5\sum_{n = 0}^{\infty}\brak{-\frac{1}{2}}^nz^{-n} \\
+		 &= 1 - \frac{1}{2}z^{-1} + 5\sum_{n = 2}^{\infty}\brak{-\frac{1}{2}}^nz^{-n} \\
+		 &= \sum_{n = 0}^{\infty}\brak{-\frac{1}{2}}^nz^{-n} + 4\sum_{n = 2}^{\infty}\brak{-\frac{1}{2}}^nz^{-n} \\
+		 &= \sum_{n = -\infty}^{\infty}u(n)\brak{-\frac{1}{2}}^nz^{-n} + \nonumber \\
+		 &\sum_{n = -\infty}^{\infty}u(n - 2)\brak{-\frac{1}{2}}^{n - 2}z^{-n}
+\end{align}
+
+Therefore, from \eqref{eq:z_trans}, 
+\begin{align}
+	h(n) = \brak{-\frac{1}{2}}^{n}u(n) + \brak{-\frac{1}{2}}^{n-2}u(n-2)
+\end{align}
+
+
 \item \label{prob:impulse_resp}
 Find an expression for $h(n)$ using $H(z)$, given that 
 %in Problem \ref{eq:ztransab} and \eqref{eq:anun}, given that
@@ -555,7 +579,7 @@ using \eqref{eq:anun} and \eqref{eq:z_trans_shift}.
 \\
 \solution The following code plots Fig. \ref{fig:hn}.
 \begin{lstlisting}
-wget https://raw.githubusercontent.com/Sigma1084/EE3900/master/filter/code/hn.py
+wget https://raw.githubusercontent.com/Sigma1084/EE3900/master/filter/code/Ex5_hn.py
 \end{lstlisting}
 \begin{figure}[!ht]
 \centering
@@ -563,12 +587,29 @@ wget https://raw.githubusercontent.com/Sigma1084/EE3900/master/filter/code/hn.py
 \caption{$h(n)$ as the inverse of $H(z)$}
 \label{fig:hn}
 \end{figure}
+
+We see that $h(n)$ is bounded. For large $n$,
+\begin{align*}
+	h(n) &= \brak{-\frac{1}{2}}^n + \brak{-\frac{1}{2}}^{n - 2} \\
+		 &= \brak{-\frac{1}{2}}^{n}\brak{4 + 1} = 5\brak{-\frac{1}{2}}^n
+\end{align*}
+$\lim_{n \to \infty}\left|\frac{h(n + 1)}{h(n)}\right| = \frac{1}{2} < 1$ Therefore, $h(n)$ converges.
+
 %
 \item The system with $h(n)$ is defined to be stable if
 \begin{equation}
 \sum_{n=-\infty}^{\infty}h(n) < \infty
 \end{equation}
 Is the system defined by \eqref{eq:iir_filter} stable for the impulse response in \eqref{eq:impulse_resp}?
+
+\solution
+\begin{align*}
+	\sum_{n = -\infty}^{\infty}h\brak{n} &= \sum_{n = -\infty}^{\infty}
+	\brak{-\frac{1}{2}}^nu\brak{n} + \brak{-\frac{1}{2}}^{n - 2}u\brak{n - 2} \\
+	&= 2\brak{\frac{1}{1 + \frac{1}{2}}} = \frac{4}{3} < \infty
+\end{align*}
+Thus, the given system is stable.
+
 %
 \item 
 Compute and sketch $h(n)$ using 
@@ -592,6 +633,7 @@ wget https://raw.githubusercontent.com/Sigma1084/EE3900/master/filter/code/hndef
 \label{fig:hndef}
 \end{figure}
 %
+
 \item Compute 
 %
 \begin{equation}
