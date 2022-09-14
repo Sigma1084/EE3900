@@ -38,7 +38,7 @@
 %\usepackage{iithtlc}
 %\usepackage[framemethod=tikz]{mdframed}
 \usepackage{listings}
-% \usepackage{polynom,amsmath,amssymb}
+\usepackage{polynom, amsmath, amssymb}
 
 %\usepackage{stmaryrd}
 
@@ -538,7 +538,7 @@ This is solved and expressed as a function of n in 5.1
 
 \item Using long division, compute $h(n)$ for $n < 5$ from $H(z)$.
 
-\solution We substitute $x := z^{-1}$, and perform long division.
+\solution We substitute $x := z^{-1}$, and perform the long division.
 
 \polylongdiv{1 + x^2}{1 + \frac{1}{2}x}
 
@@ -575,7 +575,7 @@ H(z) &= \frac{1}{1 + \frac{1}{2}z^{-1}} + \frac{ z^{-2}}{1 + \frac{1}{2}z^{-1}}
 \implies h(n) &= \brak{-\frac{1}{2}}^{n}u(n) + \brak{-\frac{1}{2}}^{n-2}u(n-2)
 \end{align}
 using \eqref{eq:anun} and \eqref{eq:z_trans_shift}.
-\item Sketch $h(n)$. Is it bounded? Convergent? 
+\item Sketch $h(n)$. Is it bounded?
 \\
 \solution The following code plots Fig. \ref{fig:hn}.
 \begin{lstlisting}
@@ -593,6 +593,10 @@ We see that $h(n)$ is bounded. For large $n$,
 	h(n) &= \brak{-\frac{1}{2}}^n + \brak{-\frac{1}{2}}^{n - 2} \\
 		 &= \brak{-\frac{1}{2}}^{n}\brak{4 + 1} = 5\brak{-\frac{1}{2}}^n
 \end{align*}
+
+\item Convergent? Justify using ratio test. \\
+\solution
+
 $\lim_{n \to \infty}\left|\frac{h(n + 1)}{h(n)}\right| = \frac{1}{2} < 1$ Therefore, $h(n)$ converges.
 
 %
@@ -611,6 +615,17 @@ Is the system defined by \eqref{eq:iir_filter} stable for the impulse response i
 Thus, the given system is stable.
 
 %
+
+\item Verify the above result using a python code.
+
+\solution
+The below code calculates around 100000 terms of $h(n)$ for an approximate since we know $h(n)$ is convergent
+
+\begin{lstlisting}
+wget https://raw.githubusercontent.com/Sigma1084/EE3900/master/filter/code/Ex5_verify_hn.py
+\end{lstlisting}
+
+%
 \item 
 Compute and sketch $h(n)$ using 
 \begin{equation}
@@ -624,7 +639,7 @@ This is the definition of $h(n)$.
 \ref{fig:hn}. 
 %
 \begin{lstlisting}
-wget https://raw.githubusercontent.com/Sigma1084/EE3900/master/filter/code/hndef.py
+wget https://raw.githubusercontent.com/Sigma1084/EE3900/master/filter/code/Ex5_hndef.py
 \end{lstlisting}
 \begin{figure}[!ht]
 \centering
@@ -650,7 +665,7 @@ $y(n)$ in  Fig.
 \ref{fig:xnyn}. 
 %
 \begin{lstlisting}
-wget https://raw.githubusercontent.com/Sigma1084/EE3900/master/filter/code/ynconv.py
+wget https://raw.githubusercontent.com/Sigma1084/EE3900/master/filter/code/Ex5_ynconv.py
 \end{lstlisting}
 \begin{figure}[!ht]
 \centering
@@ -658,6 +673,30 @@ wget https://raw.githubusercontent.com/Sigma1084/EE3900/master/filter/code/yncon
 \caption{$y(n)$ from the definition of convolution}
 \label{fig:ynconv}
 \end{figure}
+
+%
+
+\item Express the above convolution using a Teoplitz matrix. \\
+
+\solution
+\begin{align*}
+	\mtx{y} &= \mtx{x} \circledast \mtx{h}\\
+	\mtx{y} &= 
+	\begin{pmatrix}
+		h_1 & 0 & . & . & . & 0 \\
+		h_2 & h_1 & . & . & . & 0 \\
+		h_3 & h_2 & h_1 & . & . & 0 \\
+		. & . & . & . & . & . \\
+		0 & . & . & h_3 & h_2 & h_1 \\
+		0 & . & . & . & h_2 & h_1 \\
+		0 & . & . & . & 0 & h_1
+	\end{pmatrix}
+	\begin{pmatrix}
+		x_1 \\ x_2 \\ \vdots \\ x_n
+	\end{pmatrix}
+\end{align*}
+
+%
 
 \item Show that
 \begin{equation}
@@ -673,8 +712,11 @@ y(n) =  \sum_{n-k=-\infty}^{\infty}x(k)h(n-k)
 This is clearly equivalent to \eqref{eq:convolution}
 
 %
+
 \section{DFT and FFT}
+
 \begin{enumerate}[label=\thesection.\arabic*]
+
 \item
 Compute
 \begin{equation}
@@ -685,6 +727,7 @@ and $H(k)$ using $h(n)$.
 \begin{equation}
 Y(k) = X(k)H(k)
 \end{equation}
+
 \item Compute
 \begin{equation}
  y\brak{n}={\frac {1}{N}}\sum _{k=0}^{N-1}Y\brak{k}\cdot e^{\j 2\pi kn/N},\quad n = 0,1,\dots, N-1
@@ -695,7 +738,7 @@ $y(n)$ in  Fig.
 \ref{fig:xnyn}. 
 %
 \begin{lstlisting}
-wget https://raw.githubusercontent.com/Sigma1084/EE3900/master/filter/code/yndft.py
+wget https://raw.githubusercontent.com/Sigma1084/EE3900/master/filter/code/Ex6_yndft.py
 \end{lstlisting}
 \begin{figure}[!ht]
 \centering
