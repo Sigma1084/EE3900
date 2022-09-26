@@ -740,15 +740,31 @@ $y(n)$ in  Fig.
 \begin{lstlisting}
 wget https://raw.githubusercontent.com/Sigma1084/EE3900/master/filter/code/Ex6_yndft.py
 \end{lstlisting}
+
 \begin{figure}[!ht]
-\centering
-\includegraphics[width=\columnwidth]{./figs/yndft}
-\caption{$y(n)$ from the DFT}
-\label{fig:yndft}
+    \centering
+    \includegraphics[width=\columnwidth]{./figs/yndft}
+    \caption{$y(n)$ from the DFT}
+    \label{fig:yndft}
 \end{figure}
 
-\item Repeat the previous exercise by computing $X(k), H(k)$ and $y(n)$ through FFT and 
-IFFT.
+\item Repeat the previous exercise by computing $X(k), H(k)$ and $y(n)$ through FFT and  IFFT.
+
+\solution The following code plots Fig. \ref{fig:ynfft}. Note that this is the same as $y(n)$ in Fig. \ref{fig:xnyn}
+
+\begin{lstlisting}
+$ wget https://raw.githubusercontent.com/goats-9/ee3900-assignments/main/Assignment_01/codes/6_4.py
+\end{lstlisting}
+
+\begin{figure}
+	\centering
+	\includegraphics[width=\columnwidth]{figs/6_4.png}
+	\caption{$y(n)$ using FFT and IFFT}
+	\label{fig:ynfft}
+\end{figure}
+\item Wherever possible, express all the above equations as matrix equations.
+
+
 \item Wherever possible, express all the above equations as matrix equations.
 \end{enumerate}
 %
