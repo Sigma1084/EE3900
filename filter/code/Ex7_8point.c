@@ -24,10 +24,12 @@ complex *fft(int n, complex *a) {
 }
 
 int main() {
-    int n = 8;
+    // int n = 8;
+    int n = 2;
     complex *a = (complex *) malloc(sizeof(complex)*n);
-    a[0] = 1.0, a[1] = 2.0, a[2] = 3.0, a[3] = 4.0;
-    a[4] = 2.0, a[5] = 1.0, a[6] = 0.0, a[7] = 0.0;
+    // a[0] = 1.0, a[1] = 2.0, a[2] = 3.0, a[3] = 4.0;
+    // a[4] = 2.0, a[5] = 1.0, a[6] = 0.0, a[7] = 0.0;
+    a[0] = 1, a[1] = 2;
     a = fft(n, a);
     for (int i = 0; i < n; i++)
         printf("X(%d) = %lf + %lfj\n", i, creal(a[i]), cimag(a[i]));
