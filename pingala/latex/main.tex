@@ -149,10 +149,10 @@ Verify the following using a python code.
 \end{enumerate}
 
 \solution
-The following code verifies all the equations
-\begin{lstlisting}
+	The following code verifies all the equations
+	\begin{lstlisting}
 wget https://raw.githubusercontent.com/Sigma1084/EE3900/master/pingala/code/Ex1_verify.py
-\end{lstlisting}
+	\end{lstlisting}
 
 
 
@@ -160,26 +160,80 @@ wget https://raw.githubusercontent.com/Sigma1084/EE3900/master/pingala/code/Ex1_
 
 \begin{enumerate}[label=\thesection.\arabic*,ref=\thesection.\theenumi]
 
-\item The {\em one sided} \(Z\)-transform of \(x(n)\) is defined as 
-\begin{align}
-	X^{+}(z) = \sum_{n = 0}^{\infty}x(n)z^{-n}, \quad z \in \mathbb{C}
-	\label{eq:one-Z}
-\end{align}
+\item The {\em one sided} $Z$-transform of $x(n)$ is defined as 
+	\begin{align}
+		X^{+}(z) = \sum_{n = 0}^{\infty}x(n)z^{-n}, \quad z \in \mathbb{C}
+		\label{eq:one-Z}
+	\end{align}
 
 \item The {\em Pingala} series is generated using the difference equation 
-\begin{align}
-	x(n+2) = x\brak{n+1} + x\brak{n},  \quad x(0) = x(1) = 1, n \ge 0
-	\label{eq:10-pingala}
-\end{align}
-Generate a stem plot for $x(n)$.
+	\begin{align}
+		\begin{split} \label{eq:10-pingala}
+			x(n+2) = x\brak{n+1} +& x\brak{n} \\
+			x(0) = x(1) =& 1, n \ge 0
+		\end{split}
+	\end{align}
+	Generate a stem plot for $x(n)$. \\
+	\solution The following code generates the plot
+	\begin{lstlisting}
+wget https://raw.githubusercontent.com/Sigma1084/EE3900/master/pingala/code/Ex2_pingala.py
+	\end{lstlisting}
+	\begin{figure}[!htp]
+		\includegraphics[width=\columnwidth]{../figs/x_n.pdf}
+		\caption{Plot of $x(n)$}
+		\label{fig:x-n}
+	\end{figure}
 
-\item Find $X^{+}(z)$.
-\item Find $x(n)$.
-\item Sketch 
-\begin{align}
-	y(n) = x\brak{n-1} + x\brak{n+1}, \quad n \ge 0
-	\label{eq:10-orig-diff-rev}
-\end{align}
+
+\newpage
+
+
+\item Find $X^{+}(z)$. \\
+	\solution Taking the {\em one-sided} $Z$-transform on both sides of \eqref{eq:10-pingala}
+	\[
+		\mathcal{Z}^+\sbrak{x(n + 2)} = \mathcal{Z}^+\sbrak{x(n + 1)} + \mathcal{Z}^+\sbrak{x(n)}
+	\]
+	\begin{align*}
+		\implies &z^2X^+(z) - z^2 - z = \ zX^+(z) - z + X^+(z) \\
+		\implies &\brak{z^2 - z - 1} X^+(z) = \ z^2 \\
+		\implies &X^+(z) = \frac{1}{1 - z^{-1} - z^{-2}}
+	\end{align*}
+	\begin{align}
+		X^+(z) = \frac{1}{\brak{1 - \alpha z^{-1}}\brak{1 - \beta z^{-1}}}, \quad |z| > |\alpha|
+		\label{eq:X-z}
+	\end{align}
+	Here $\alpha$ and $\beta$ are the roots of the characteristic equation of \eqref{eq:10-pingala} and $|z| > |\alpha|$ is the region of convergence of $X^+(z)$. \\
+	(w.l.o.g, $|\alpha| > |\beta|$ is assumed)
+
+
+\item Find $x(n)$. \\
+	\solution Expanding $X^+(z)$ in \eqref{eq:X-z} using partial fractions, we get
+	\begin{align*}
+		X^+(z) &= \frac{1}{\brak{\alpha - \beta}z^{-1}}\sbrak{\frac{1}{1 - \alpha z^{-1}} - \frac{1}{1 - \beta z^{-1}}} \\
+			&= \frac{1}{\brak{\alpha - \beta}}\sum_{n = 0}^{\infty}\brak{\alpha^n - \beta^n}z^{-n} \\
+			&= \sum_{n = 1}^\infty \frac{\alpha^{n} - \beta^{n}}{\alpha - \beta}z^{-n + 1} \\
+			&= \sum_{n = 0}^\infty \frac{\alpha^{n + 1} - \beta^{n + 1}}{\alpha - \beta}z^{-n}
+	\end{align*}
+	\begin{align}
+		x(n) = \frac{\alpha^{n + 1} - \beta^{n + 1}}{\alpha - \beta}u(n) = a_{n + 1}u(n)
+		\label{eq:x-n-def}
+	\end{align}
+
+
+\item Sketch
+	\begin{align}
+		y(n) = x\brak{n-1} + x\brak{n+1}, \quad n \ge 0
+		\label{eq:10-orig-diff-rev}
+ 	\end{align}
+	 \solution The following code generates the plot
+	 \begin{lstlisting}
+ wget https://raw.githubusercontent.com/Sigma1084/EE3900/master/pingala/code/Ex2_pingala.py
+	 \end{lstlisting}
+	 \begin{figure}[!htp]
+		 \includegraphics[width=\columnwidth]{../figs/y_n.pdf}
+		 \caption{Plot of $y(n)$}
+		 \label{fig:y-n}
+	 \end{figure}
 
 \item Find $Y^{+}(z)$. 
 \item Find $y(n)$.
