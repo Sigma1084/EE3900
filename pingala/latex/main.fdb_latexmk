@@ -1,8 +1,8 @@
 # Fdb version 3
-["pdflatex"] 1665126227 "/home/sig/shared/Sem5/EE3900/pingala/latex/main.tex" "main.pdf" "main" 1665126227
+["pdflatex"] 1665131102 "/home/sig/shared/Sem5/EE3900/pingala/latex/main.tex" "main.pdf" "main" 1665131103
   "../figs/x_n.pdf" 1665122067 9809 37b64e05e02c6093c46102c478d0e2bc ""
   "../figs/y_n.pdf" 1665122041 8680 8831aa8742f4a382c8aefe5f1df51337 ""
-  "/home/sig/shared/Sem5/EE3900/pingala/latex/main.tex" 1665126226 10277 5e5e956d2a1f5a4dbe5a6d10002fb770 ""
+  "/home/sig/shared/Sem5/EE3900/pingala/latex/main.tex" 1665131102 13189 f39257958897c8bc5afc4f8a22450f1f ""
   "/usr/share/texmf-dist/fonts/enc/dvips/base/8r.enc" 1650183167 4850 80dc9bab7f31fb78a000ccfed0e27cab ""
   "/usr/share/texmf-dist/fonts/map/fontname/texfonts.map" 1650183167 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/share/texmf-dist/fonts/tfm/adobe/times/ptmb7t.tfm" 1650183167 2172 fd0c924230362ff848a33632ed45dc23 ""
@@ -39,6 +39,7 @@
   "/usr/share/texmf-dist/fonts/type1/public/txfonts/rtxsc.pfb" 1650183167 11099 83316203930a07cc1ec0d29d0f0dd35c ""
   "/usr/share/texmf-dist/fonts/type1/public/txfonts/txex.pfb" 1650183167 17531 c91f2d6943f51d7c46d6b7b9cedd50ba ""
   "/usr/share/texmf-dist/fonts/type1/public/txfonts/txsy.pfb" 1650183167 20336 69267d8a81bca8b24c9b42694a4a28f9 ""
+  "/usr/share/texmf-dist/fonts/type1/public/txfonts/txsya.pfb" 1650183167 18865 ebb26de41fddbc82c044d680eec38cec ""
   "/usr/share/texmf-dist/fonts/type1/public/txfonts/txsyb.pfb" 1650183167 24244 ffc0312cbd155e940e16287bb7cbb16c ""
   "/usr/share/texmf-dist/fonts/type1/urw/times/utmb8a.pfb" 1650183167 44729 811d6c62865936705a31c797a1d5dada ""
   "/usr/share/texmf-dist/fonts/type1/urw/times/utmbi8a.pfb" 1650183167 44656 0cbca70e0534538582128f6b54593cca ""
@@ -131,10 +132,10 @@
   "/usr/share/texmf-dist/web2c/texmf.cnf" 1650183167 39911 2da6c67557ec033436fe5418a70a8a61 ""
   "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1664995347 4278762 af3ac1370db81a450c1118eabf1fe718 ""
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1664995322 2927660 c8a25a85b70262ca5925a8a85c6ef5d7 ""
-  "main.aux" 1665126227 2052 0767021640deb75c39249bd4c0a80733 "pdflatex"
-  "main.out" 1665126227 377 6ef0fda02ae42ab5eb9699af63378c50 "pdflatex"
-  "main.tex" 1665126226 10277 5e5e956d2a1f5a4dbe5a6d10002fb770 ""
-  "main.toc" 1665126227 214 b7d77648735507f5510b34423b2e2c1f "pdflatex"
+  "main.aux" 1665131103 2384 9ce2cb0fe75ce783021d161d150b8d00 "pdflatex"
+  "main.out" 1665131103 377 6ef0fda02ae42ab5eb9699af63378c50 "pdflatex"
+  "main.tex" 1665131102 13189 f39257958897c8bc5afc4f8a22450f1f ""
+  "main.toc" 1665131103 214 b7d77648735507f5510b34423b2e2c1f "pdflatex"
   (generated)
   "main.aux"
   "main.log"

@@ -907,6 +907,7 @@ INPUT /usr/share/texmf-dist/fonts/type1/public/txfonts/rtxr.pfb
 INPUT /usr/share/texmf-dist/fonts/type1/public/txfonts/rtxsc.pfb
 INPUT /usr/share/texmf-dist/fonts/type1/public/txfonts/txex.pfb
 INPUT /usr/share/texmf-dist/fonts/type1/public/txfonts/txsy.pfb
+INPUT /usr/share/texmf-dist/fonts/type1/public/txfonts/txsya.pfb
 INPUT /usr/share/texmf-dist/fonts/type1/public/txfonts/txsyb.pfb
 INPUT /usr/share/texmf-dist/fonts/type1/urw/times/utmb8a.pfb
 INPUT /usr/share/texmf-dist/fonts/type1/urw/times/utmbi8a.pfb
