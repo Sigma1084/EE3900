@@ -165,3 +165,13 @@ res
 
 cmake-build-debug/
 *.out
+
+# Latex
+*.aux
+*.fdb_latexmk
+*.fls
+*.log
+*.synctex.gz
+*.toc
+*.out
+*.txt
