@@ -1,8 +1,8 @@
 # Fdb version 3
-["pdflatex"] 1665124357 "/home/sig/shared/Sem5/EE3900/pingala/latex/main.tex" "main.pdf" "main" 1665124358
+["pdflatex"] 1665126227 "/home/sig/shared/Sem5/EE3900/pingala/latex/main.tex" "main.pdf" "main" 1665126227
   "../figs/x_n.pdf" 1665122067 9809 37b64e05e02c6093c46102c478d0e2bc ""
   "../figs/y_n.pdf" 1665122041 8680 8831aa8742f4a382c8aefe5f1df51337 ""
-  "/home/sig/shared/Sem5/EE3900/pingala/latex/main.tex" 1665124357 8353 ac1221ddd22f874dfcdcb9da47524362 ""
+  "/home/sig/shared/Sem5/EE3900/pingala/latex/main.tex" 1665126226 10277 5e5e956d2a1f5a4dbe5a6d10002fb770 ""
   "/usr/share/texmf-dist/fonts/enc/dvips/base/8r.enc" 1650183167 4850 80dc9bab7f31fb78a000ccfed0e27cab ""
   "/usr/share/texmf-dist/fonts/map/fontname/texfonts.map" 1650183167 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/share/texmf-dist/fonts/tfm/adobe/times/ptmb7t.tfm" 1650183167 2172 fd0c924230362ff848a33632ed45dc23 ""
@@ -131,10 +131,10 @@
   "/usr/share/texmf-dist/web2c/texmf.cnf" 1650183167 39911 2da6c67557ec033436fe5418a70a8a61 ""
   "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1664995347 4278762 af3ac1370db81a450c1118eabf1fe718 ""
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1664995322 2927660 c8a25a85b70262ca5925a8a85c6ef5d7 ""
-  "main.aux" 1665124358 1932 ef3adfc500fcf2305f86bd422a585ed0 "pdflatex"
-  "main.out" 1665124358 377 6ef0fda02ae42ab5eb9699af63378c50 "pdflatex"
-  "main.tex" 1665124357 8353 ac1221ddd22f874dfcdcb9da47524362 ""
-  "main.toc" 1665124358 214 761ca3043350f6c1f602a4403678a58c "pdflatex"
+  "main.aux" 1665126227 2052 0767021640deb75c39249bd4c0a80733 "pdflatex"
+  "main.out" 1665126227 377 6ef0fda02ae42ab5eb9699af63378c50 "pdflatex"
+  "main.tex" 1665126226 10277 5e5e956d2a1f5a4dbe5a6d10002fb770 ""
+  "main.toc" 1665126227 214 b7d77648735507f5510b34423b2e2c1f "pdflatex"
   (generated)
   "main.aux"
   "main.log"

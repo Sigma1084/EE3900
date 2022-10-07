@@ -235,8 +235,50 @@ wget https://raw.githubusercontent.com/Sigma1084/EE3900/master/pingala/code/Ex2_
 		 \label{fig:y-n}
 	 \end{figure}
 
-\item Find $Y^{+}(z)$. 
-\item Find $y(n)$.
+
+\item Find $Y^{+}(z)$. \\
+	\solution
+	Taking the one-sided $Z$-transform on both sides of \eqref{eq:10-orig-diff-rev},
+	\[
+		\mathcal{Z}^+\sbrak{y(n)} = \mathcal{Z}^+\sbrak{x(n + 1)} + \mathcal{Z}^+\sbrak{x(n - 1)}
+	\]
+	\begin{align}
+		Y^+(z) =& \ zX^+(z) - zx(0) + z^{-1}X^+(z) + zx(-1) \nonumber \\
+		=& \ \frac{z + z^{-1}}{1 - z^{-1} - z^{-2}} - z \nonumber \\
+		Y^+(z) =& \ \frac{1 + 2z^{-1}}{1 - z^{-1} - z^{-2}}, \quad |z| > |\alpha| \label{eq:Y-z}
+	\end{align}
+	\ensuremath{\big( x(-1) = 0 \text{ since } x(n) = 0 \ \forall\ n < 0 \big)}
+
+\item Find $y(n)$. \\
+	\solution Using \eqref{eq:Y-z},
+	\begin{align*}
+		Y^+(z) &= (1 + 2z^{-1}) \ X^+(z) \\
+			&= (1 + 2z^{-1})\sum_{n = 0}^{\infty}x(n)z^{-n} \\
+			&= \sum_{n = 0}^{\infty}x(n)z^{-n} + \sum_{n = 1}^{\infty}2x(n - 1)z^{-n} \\
+			&= x(0) + \sum_{n = 1}^{\infty}\brak{x(n) + 2x(n - 1)}z^{-n} \\
+			&= x(0) + \sum_{n = 1}^{\infty}\brak{x(n + 1) + x(n - 1)}z^{-n}
+	\end{align*}
+
+	\begin{align*}
+		\implies \quad & y(0) = x(0) = 1 \\
+			& \forall n > 0 \quad y(n) = x(n+1) + x(n-1) \\
+			& \quad \quad \quad \quad \quad \quad = a_{n+1} + a_{n-1}
+	\end{align*}
+
+	$\alpha$ and $\beta$ are the roots of the characteristic equation of \eqref{eq:10-pingala}, $z^2 - z - 1 = 0$ \\
+	(w.l.o.g, $|\alpha| > |\beta|$ is assumed) \\
+	$\implies \alpha\beta = -1 \quad \text{and} \quad \alpha + \beta = 1$
+
+	\begin{align}
+		y(n) &= \frac{\brak{\alpha^{n + 2} - \beta^{n + 2}} + \brak{\alpha^{n} + \beta^{n}}}{\alpha - \beta} \nonumber \nonumber \\
+			&= \frac{\brak{\alpha^{n + 2} - \beta^{n + 2}} - \alpha\beta\brak{\alpha^{n} + \beta^{n}}}{\alpha - \beta} \nonumber \\
+			&= \frac{\brak{\alpha - \beta}\brak{\alpha^{n + 1} + \beta^{n + 1}}}{\alpha - \beta} \nonumber \\
+		y(n) &= \alpha^{n + 1} + \beta^{n + 1} \label{eq:y-b}
+	\end{align}
+
+	Thus, $y(n) = \alpha^{n + 1} + \beta^{n + 1}$ for $n \geq 0$ as $\alpha + \beta = 1$. \\
+	Comparing \eqref{eq:y-b} with the definition of $b_n$, we see that $y(n) = b_{n + 1}$.
+
 \end{enumerate}
 
 
