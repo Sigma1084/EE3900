@@ -283,9 +283,10 @@ This manual provides a simple introduction to Transforms
 		&= \brak{\frac{R_2 + 2R_1}{R_1 + R_2}} \brak{\frac{1}{s} - \frac{1}{\frac{1}{R_2 C_0} + \frac{1}{R_1 C_0} + s}} 
 	\end{align*}
 	Applying inverse Laplace transform,
-	\begin{align*}
+	\begin{align}
 		v_{C_0}(t) = \frac{R_2 + 2R_1}{R_1 + R_2} \brak{u(t) - e^{-\brak{\frac{1}{R_1 C_0} + \frac{1}{R_2 C_0}} \, t} u(t)}
-	\end{align*}
+		\label{eq:vC0}
+	\end{align}
 	Using the values $R_1 = 1 \, \Omega$, $R_2 = 2 \, \Omega$, $C_0 = 1 \, \mu F$, we get
 	\begin{align*}
 		v_{C_0}(t) = \frac{4}{3} u(t) \brak{1 - e^{-1.5 \times 10^{6} \, t}} 
@@ -304,15 +305,18 @@ wget https://github.com/Sigma1084/EE3900/blob/master/cktsig/code/Ex2_plotVt.py
 
 
 \item Verify your result using ngspice.
+	The following code yields $v_{C_0}(t)$. using ngspice
+	\begin{lstlisting}
+wget https://github.com/Sigma1084/EE3900/blob/master/cktsig/code/Ex2.spice
+	\end{lstlisting}
 
 
-\item Obtain Fig. 
-	\ref{fig:lap-ckt}
-	using the equivalent differential equation.
-	\\ \solution\\
+
+\item Obtain Fig. \ref{fig:lap-ckt} using the equivalent differential equation. \\
+	\solution\\
 	\begin{circuitikz}[scale=0.6] \draw
 		(0, 0) to [short] (10, 0)
-		(5, 0) to [C=$\frac{1}{C_0}$, i<=$i_1$] (5, 3)
+		(5, 0) to [C=$C_0$, i<=$i_1$] (5, 3)
 		(5, 3) to [R=$R_2$] (10, 3)
 		(0, 3) to [R=$R_1$, i<=$i_2$] (5, 3)
 		(10, 3) to [battery1, l=$V_2$, i<=$i$] (10, 0)
@@ -320,14 +324,14 @@ wget https://github.com/Sigma1084/EE3900/blob/master/cktsig/code/Ex2_plotVt.py
 		;
 	\end{circuitikz}
 	Using KVL on the left and right loops, we get
-	\begin{align*}
-		i_2(t) \ R_1 - V_1 - \int_0^t \frac{i_1(t)}{C_0} dt &= 0 \\
-		i(t) \ R_2 + V_2 + \int_0^t \frac{i_1(t)}{C_0} dt &= 0
-	\end{align*}
+	\begin{align}
+		i_2(t) \ R_1 + V_1 - \int_0^t \frac{i_1(t)}{C_0} dt &= 0 \label{eq:q2_diff} \\
+		-i(t) \ R_2 + V_2 - \int_0^t \frac{i_1(t)}{C_0} dt &= 0
+	\end{align}
 	Taking the Laplace Transform after multiplying u(t) in both equations,
 	\begin{align*}
-		\mathcal{L} \left( R_1 i_2(t)u(t) - V_1u(t) - u(t)\int_0^t \frac{i_1}{C_0} dt \right) &= 0 \\
-		\mathcal{L} \left( R_2 i(t)u(t) + V_2u(t) + u(t)\int_0^t \frac{i_1}{C_0} dt \right) &= 0
+		\mathcal{L} \left( R_1 i_2(t)u(t) + V_1u(t) - u(t)\int_0^t \frac{i_1}{C_0} dt \right) &= 0 \\
+		\mathcal{L} \left( -R_2 i(t)u(t) + V_2u(t) - u(t)\int_0^t \frac{i_1}{C_0} dt \right) &= 0
 	\end{align*}
 	Suppose $i(t)u(t) \laplace I(s) \text{ and } Vu(t) \laplace \frac{V}{s}$
 	\[
@@ -337,13 +341,13 @@ wget https://github.com/Sigma1084/EE3900/blob/master/cktsig/code/Ex2_plotVt.py
 	\]
 	(Using the properties of Laplace Transform) \\
 	The above equations after transform
-	\begin{align*}
-		R_1 I_2(s) - \frac{V_1}{s} - \frac{I_1(s)}{sC_0} &= 0\\
-		R_2 I(s) + \frac{V_2}{s} + \frac{I_1(s)}{sC_0} &= 0 
-	\end{align*}
-	Now after applying the transformation, from time domain to s-domain, we replace the capacitor with an equivalent resistor of resistence $\frac{1}{sC_0}$ and replace $I$ by $I(s)$, $V$ by $\frac{V}{s}$ \\
-
-	The equivalent s-domain circuit is now, 
+	\begin{align}
+		R_1 I_2(s) + \frac{V_1}{s} - \frac{I_1(s)}{sC_0} &= 0 \label{eq:q2_diff_lap} \\
+		-R_2 I(s) + \frac{V_2}{s} - \frac{I_1(s)}{sC_0} &= 0 
+	\end{align}
+	Now after applying the transformation, from time domain to s-domain, we replace the capacitor with an equivalent resistor of resistence $\frac{1}{sC_0}$ and replace $I$ by $I(s)$, $V$ by $\frac{V}{s}$
+	
+	The equivalent s-domain circuit is now,
 	\begin{circuitikz}[scale=0.6] \draw
 		(0, 0) to [short] (10, 0)
 		(5, 0) to [C=$\frac{1}{sC_0}$, i<=$I_1(s)$] (5, 3)
@@ -361,21 +365,193 @@ wget https://github.com/Sigma1084/EE3900/blob/master/cktsig/code/Ex2_plotVt.py
 \section{Initial Conditions}
 \begin{enumerate}[label=\arabic*.,ref=\thesection.\theenumi]
 \numberwithin{equation}{section}
-\item Find $q_2$ in Fig. 
-			\ref{fig:ckt}.
-\item Draw the equivalent $s$-domain resistive circuit when S is switched to position Q.  Use variables $R_1, R_2, C_0$ for the passive elements.
-Use latex-tikz.
-		\label{prob:init}
-	
-		\item $V_{C_0}(s)$ = ?  
-	\item $v_{C_0}(t)$ = ? Plot using python.
-	\item Verify your result using ngspice.
-	\item Find $v_{C_0}(0-), v_{C_0}(0+)$ and  $v_{C_0}(\infty) $. 
-	\item Obtain the Fig.  in problem 
-		\ref{prob:init}
-			using the equivalent differential equation.
 
+
+\item Find $q_2$ in Fig. \ref{fig:ckt} \\
+	\solution\\
+	Current through the capacitor is $0$ in steady state. 
+	Since the current flows only in the outer loop, let the current in the outer loop be $I$.
+	\begin{align*}
+		I = \frac{2V}{(1+2)\ohm} = \frac{2}{3}A
+	\end{align*}
+	So, the potential difference across the capacitor is
+	\begin{align*}
+		V_{C_0} &= 2 - \left( \frac{2}{3} \times 2 \right) = \frac{2}{3} V \\
+		q_2 &= C V_{C_0} \\
+		q_2 &= 1 \mu C \times \frac{2}{3} V \\
+		q_2 &= \frac{2}{3} \mu C
+	\end{align*}
+
+
+\item Draw the equivalent $s$-domain resistive circuit when S is switched to position Q.  Use variables $R_1, R_2, C_0$ for the passive elements.
+Use latex-tikz. \label{prob:init} \\
+	\solution\\
+	\begin{circuitikz}[american, scale=0.6] \draw
+		(0, 0) to [short] (12, 0)
+		(6, 2) to [C=$\frac{1}{sC_0}$] (6, 0)
+		(6, 4) to [V,v=$\frac{V_0}{s}$] (6, 2)
+		(6, 4) to [R=$R_2$] (12, 4)
+		(0, 4) to [R=$R_1$] (6, 4)
+		(12, 4) to [battery1, l=$\frac{V_2}{s}$] (12, 0)
+		(0, 0) to [short] (0, 4)
+		;
+	\end{circuitikz}
+
+	
+\item $V_{C_0}(s)$ = ?\\
+	\solution\\
+	Applying KCL at the upper junction and assuming the bottom is grounded, we have,
+	\begin{align*}
+		&\frac{V_{C_0}(s) }{R_1} + \frac{V_{C_0}(s) - \frac{V_2}{s}}{R_2} + \frac{V_{C_0}(s) - \frac{V_0}{s}}{\frac{1}{s C_0}} = 0 \\
+		&V_{C_0}(s) \brak{\frac{1}{R_1} + \frac{1}{R_2} + s C_0} = \frac{V_2}{sR_2} + V_0C_0 \\
+		&V_{C_0}(s) = \frac{\frac{V_2}{sR_2} + V_0C_0} {\frac{1}{R_1} + \frac{1}{R_2} + s C_0}\\
+		&V_{C_0}(s) = V_0\brak{\frac{1}{\frac{1}{C_0}\brak{\frac{1}{R_1} + \frac{1}{R_2}}+s}} \\
+		&+ \frac{V_2}{R_2\brak{\frac{1}{R_1} +\frac{1}{R_2}}}\brak{\frac{1}{s} - \frac{1}{\frac{1}{C_0}\brak{\frac{1}{R_1} + \frac{1}{R_2}} + s}}
+	\end{align*}
+	
+
+\item $v_{C_0}(t)$ = ? Plot using python.\\
+	\solution\\
+	Applying inverse Laplace transform to $V_{C_0}(s)$, we have,
+	\begin{align*}
+		&v_{C_0}(t) = V_0e^{-\brak{\frac{1}{R_1} + \frac{1}{R_2}}\frac{t}{C_0}}u(t) \nonumber \\ 
+		&+ \frac{V_2}{R_2\brak{\frac{1}{R_1}+\frac{1}{R_2}}}\brak{1 - e^{-\brak{\frac{1}{R_1} + \frac{1}{R_2}}\frac{t}{C_0}}}u(t)
+	\end{align*}
+	Substituting the values $R_1=1, R_2=2, C_0=1\mu F, V_0=\frac{4}{3}V, V_2=2V$
+	\begin{align}
+		&v_{C_0}(t) = \frac{2}{3} \brak{1 + e^{-\brak{1.5 \times 10^6}t}}u(t)
+		\label{eq:vc0t}
+	\end{align}
+
+	The following code yields $v_{C_0}(t)$.
+	\begin{lstlisting}
+wget https://github.com/Sigma1084/EE3900/blob/master/cktsig/code/Ex3_plotVt.py
+	\end{lstlisting}
+
+	\begin{figure}[!ht]
+		\centering
+		\includegraphics[width=\columnwidth]{figs/Ex3_vt.pdf}
+		\caption {}
+		\label{fig:q3_vc}
+	\end{figure}
+
+
+\item Verify your result using ngspice.
+The following code yields $v_{C_0}(t)$. using ngspice
+\begin{lstlisting}
+wget https://github.com/Sigma1084/EE3900/blob/master/cktsig/code/Ex3.spice
+\end{lstlisting}
+
+	
+
+\item Find $v_{C_0}(0-), v_{C_0}(0+)$ and  $v_{C_0}(\infty) $.\\
+	\solution\\
+	Using the initial conditions, we have,
+	\begin{align*}
+		v_{C_0}(0-) &= \frac{q_1}{C_0} = \frac{4}{3}V
+	\end{align*}
+	Using \eqref{eq:vc0t}, we have,
+	\begin{align*}
+		v_{C_0}(0+) &= \frac{2}{3} \brak{1 + e^{-\brak{1.5 \times 10^6}0}}u(0^+) = \frac{4}{3}V \\
+		v_{C_0}(\infty) &= \frac{2}{3} \brak{1 + e^{-\brak{1.5 \times 10^6}\infty}}u(\infty) = \frac{2}{3}V
+	\end{align*}
+	
+
+\item Obtain the Fig.  in problem \ref{prob:init} using the equivalent differential equation.\\
+	\solution\\
+	Constructing the circuit, \\
+	\begin{circuitikz}[american, scale=0.6] \draw
+		(0, 0) to [short] (12, 0)
+		(6, 0) to [C=$C_0$, *-, i<=$i_1$] (6, 3)
+		(6, 4.5) to [V,v=$V_0$] (6, 3)
+		(6, 4.5) to [short] (6, 5)
+		(6, 5) to [R=$R_2$] (12, 5)
+		(0, 5) to [R=$R_1$, -*, i<=$i_2$] (6, 5)
+		(12, 5) to [battery1, l=$V_2$, i=$i$] (12, 0)
+		(0, 0) to [short] (0, 5)
+		(6, 5) node[label={above:P}] {}
+		(6, 0) node[label={below:Q}] {}
+		;
+	\end{circuitikz}
+	Using KVL on both the left and outer loops, we have
+	\begin{align*}
+		-i_2(t) \ R_1 + V_0 + \int_0^t \frac{i_1(t)}{C_0} dt &= 0 \\
+		-i(t) \ R_2 + V_2 - i_2(t) \ R_1 &= 0
+	\end{align*}
+	Taking the Laplace Transform after multiplying u(t) in both equations,
+	\begin{align*}
+		\mathcal{L} \left( -R_1 i_2(t)u(t) + V_0u(t) + u(t)\int_0^t \frac{i_1}{C_0} dt \right) &= 0 \\
+		\mathcal{L} \left( -R_2 i(t)u(t) + V_2u(t) - R_1 i_2(t)u(t) \right) &= 0
+	\end{align*}
+	Suppose $i(t)u(t) \laplace I(s) \text{ and } Vu(t) \laplace \frac{V}{s}$
+	\[
+		\implies \mathcal{L} \left( u(t) \int_0^t \frac{i_1}{C_0} dt \right)
+		= \frac{1}{sC_0} \mathcal{L} \left( u(t)i_1 \right)
+		= \frac{I_1(s)}{sC_0}
+	\]
+	(Using the properties of Laplace Transform) \\
+	The above equations after transform
+	\begin{align*}
+		R_1 I_2(s) + \frac{V_0}{s} + \frac{I_1(s)}{sC_0} &= 0\\
+		-R_2 I(s) + \frac{V_2}{s} - R_1 I_2(s) &= 0 
+	\end{align*}
+	Now after applying the transformation, from time domain to s-domain, we replace the capacitor with an equivalent resistor of resistence $\frac{1}{sC_0}$ and replace $I$ by $I(s)$, $V$ by $\frac{V}{s}$, and hence we get,
+
+	\begin{circuitikz}[american, scale=0.6] \draw
+		(0, 0) to [short] (12, 0)
+		(6, 0) to [C=$\frac{1}{sC_0}$, *-, i<=$I_1(s)$] (6, 3)
+		(6, 4.5) to [V,v=$\frac{V_0}{s}$] (6, 3)
+		(6, 4.5) to [short] (6, 5)
+		(6, 5) to [R=$R_2$] (12, 5)
+		(0, 5) to [R=$R_1$, -*, i<=$I_2(s)$] (6, 5)
+		(12, 5) to [battery1, l=$\frac{V_2}{s}$, i=$I(s)$] (12, 0)
+		(0, 0) to [short] (0, 5)
+		(6, 5) node[label={above:P}] {}
+		(6, 0) node[label={below:Q}] {}
+		;
+	\end{circuitikz}
+
+
+\end{enumerate}
+
+
+\section{Bilinear Transform}
+\begin{enumerate}[label=\arabic*.,ref=\thesection.\theenumi]
+\numberwithin{equation}{section}
+
+	\item In Fig. \ref{fig:ckt}, Consider the case when $S$ is switched to $Q$ right in the beginning. Formulate the differential equation. \\
+	\solution\\
+	Special Case of \eqref{eq:q2_diff}, putting $V_1 = 0$, we get
+	\begin{align}
+		i_2(t) \ R_1 - \int_0^t \frac{i_1(t)}{C_0} dt &= 0 \label{eq:q4_diff} \\
+		-i(t) \ R_2 + V_2 - \int_0^t \frac{i_1(t)}{C_0} dt &= 0
+	\end{align}
+	The above equations after transform
+	\begin{align}
+		R_1 I_2(s) - \frac{I_1(s)}{sC_0} &= 0 \label{eq:q4_diff_lap} \\
+		-R_2 I(s) + \frac{V_2}{s} - \frac{I_1(s)}{sC_0} &= 0 
+	\end{align}
+
+	\item Find $H(s)$ considering the ouput voltage at the capacitor.
+
+
+	\item Plot $H(s)$.  What kind of filter is it?
+
+
+	\item Using trapezoidal rule for integration, formulate the difference equation by considering
+	\begin{align}
+		y(n) = y(t)\vert_{t=n}
+	\end{align}
+
+
+	\item Find $H(z)$.
+
+
+	\item How can you obtain $H(z)$ from $H(s)$?
+	
 
 	\end{enumerate}
+\end{document}
+
 
 \end{document}

@@ -1,0 +1,19 @@
+RC circuit (after switching)
+
+r1 0 2 1
+r2 2 3 2
+v1 2 1 dc 1.33V
+v2 3 0 dc 2V
+c1 1 0 1u
+
+*transient analysis
+.tran 100u 5u uic
+*defining the run-time control functions
+.control
+run
+*plotting output voltages
+*if you want to show the plot, uncomment the below line
+*plot v(2)
+wrdata Ex3_output.dat v(2)
++ title "Voltage across capacitor"
+.endc
