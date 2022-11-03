@@ -21,6 +21,8 @@
 \usepackage{multirow}
 \usepackage{enumitem}
 \usepackage{listings}
+\usepackage{graphicx}
+\usepackage{amssymb}
 \let\vec\mathbf
 
 \DeclareMathOperator*{\Res}{Res}
@@ -52,8 +54,6 @@ columns=fullflexible
 \newtheorem{corollary}[theorem]{Corollary}
 \newtheorem{example}{Example}[section]
 \newtheorem{definition}{Definition}[section]
-\newcommand{\BEQA}{\begin{eqnarray}}
-\newcommand{\EEQA}{\end{eqnarray}}
 \newcommand{\define}{\stackrel{\triangle}{=}}
 \newcommand{\myvec}[1]{\ensuremath{\begin{pmatrix}#1\end{pmatrix}}}
 \newcommand{\mydet}[1]{\ensuremath{\begin{vmatrix}#1\end{vmatrix}}}
@@ -101,11 +101,6 @@ columns=fullflexible
 \let\StandardTheFigure\thefigure
 \renewcommand{\thefigure}{\theproblem}
 
-\def\putbox#1#2#3{\makebox[0in][l]{\makebox[#1][l]{}\raisebox{\baselineskip}[0in][0in]{\raisebox{#2}[0in][0in]{#3}}}}
-     \def\rightbox#1{\makebox[0in][r]{#1}}
-     \def\centbox#1{\makebox[0in]{#1}}
-     \def\topbox#1{\raisebox{-\baselineskip}[0in][0in]{#1}}
-     \def\midbox#1{\raisebox{-0.5\baselineskip}[0in][0in]{#1}}
 
 \vspace{3cm}
 
@@ -140,7 +135,7 @@ Let
 wget https://raw.githubusercontent.com/Sigma1084/EE3900/master/charger/codes/Ex1_1_plotxt.py
 	\end{lstlisting}
 	\begin{figure}[!htp]
-		\includegraphics[width=\columnwidth]{../figs/Ex1_1_xt.pdf}
+		\includegraphics[width=\columnwidth]{figs/Ex1_1_xt}
 		\caption{Plot of $x(t)$}
 		\label{fig:x-t}
 	\end{figure}
@@ -150,7 +145,7 @@ wget https://raw.githubusercontent.com/Sigma1084/EE3900/master/charger/codes/Ex1
 	\solution\\
 	We know that \( |\sin(x)| \) is periodic with fundamental period of \( \pi \). \\
 	\( \implies \) Fundamental period of \( A|\sin(ax) \) is \( \frac{\pi}{a} \) \\
-	Fundamental period of \( A_0|\sin(2\pi f_0t)| \) is \( \frac{\pi}{2\pi f_0} \) \\
+	Fundamental period of \( A_0|\sin(2\pi f_0 t)| \) is \( \frac{\pi}{2\pi f_0} \) \\
 	\( \implies \) Fundamental period of \( x(t) \) is \( \frac{1}{2f_0} \)
 	
 
@@ -165,7 +160,7 @@ Consider $A_0 =12$ and $f_0 = 50$ for all numerical calculations.
 
 \item If
 	\begin{align}
-		x(t) = \sum_{k = -\infty}^{\infty}c_ke^{j2\pi kf_0 t}
+		x(t) = \sum_{k = -\infty}^{\infty}c_k e^{j2\pi kf_0 t}
 	\label{eq:one-Z-complex}
 	\end{align}
 	show that
@@ -175,10 +170,10 @@ Consider $A_0 =12$ and $f_0 = 50$ for all numerical calculations.
 	\end{align}
 	\solution\\
 	Consider for some \( n \in \mathbb{Z} \),
-	\[ x(t) e^{j2\pi nf_0t} = \sum_{k=-\infty}^\infty c_k e^{j2\pi (k-n) f_0t} \]
-	We know using the periodicity of \( e^{j2\pi kf_0t} \),
+	\[ x(t) e^{j2\pi nf_0 t} = \sum_{k=-\infty}^\infty c_k e^{j2\pi (k-n) f_0 t} \]
+	We know using the periodicity of \( e^{j2\pi kf_0 t} \),
 	\[
-		\int_{-\frac{1}{2f_0}}^{\frac{1}{2f_0}} e^{j2\pi kf_0t} dt =
+		\int_{-\frac{1}{2f_0}}^{\frac{1}{2f_0}} e^{j2\pi kf_0 t} dt =
 		\begin{cases}
 			\frac{1}{f_0} \text{ if } k=0 \\
 			0 \text{ otherwise}
@@ -186,38 +181,38 @@ Consider $A_0 =12$ and $f_0 = 50$ for all numerical calculations.
 	\]
 	Now,
 	\begin{align*}
-		\int_{-\frac{1}{2f_0}}^{\frac{1}{2f_0}}x(t) e^{j2\pi nf_0t} dt
+		\int_{-\frac{1}{2f_0}}^{\frac{1}{2f_0}}x(t) e^{j2\pi nf_0 t} dt
 		&= \int_{-\frac{1}{2f_0}}^{\frac{1}{2f_0}}
-		\sum_{k=-\infty}^\infty c_k e^{j2\pi (k-n) f_0t} \\
+		\sum_{k=-\infty}^\infty c_k e^{j2\pi (k-n) f_0 t} \\
 		&= \frac{c_n}{f_0}
 	\end{align*}
 	\[
-		\implies c_n = f_0 \int_{-\frac{1}{2f_0}}^{\frac{1}{2f_0}}x(t) e^{j2\pi nf_0t} dt
+		\implies c_n = f_0 \int_{-\frac{1}{2f_0}}^{\frac{1}{2f_0}}x(t) e^{j2\pi nf_0 t} dt
 	\]
 	
 	\pagebreak
 
 \item
-	Find $c_k$ for \eqref{eq:10-orig-diff-def} \\
+	Find $c_k$ for~\eqref{eq:10-orig-diff-def} \\
 	\solution
 	\begin{align*}
-		c_k &= f_0 \int_{-\frac{1}{2f_0}}^{\frac{1}{2f_0}}x(t) e^{j2\pi kf_0t} dt \\
+		c_k &= f_0 \int_{-\frac{1}{2f_0}}^{\frac{1}{2f_0}}x(t) e^{j2\pi kf_0 t} dt \\
 		&= f_0 \int_{-\frac{1}{2f_0}}^{\frac{1}{2f_0}}
-			A_0\abs{\sin\brak{2\pi f_0 t}} e^{j2\pi kf_0t} dt \\
+			A_0\abs{\sin\brak{2\pi f_0 t}} e^{j2\pi kf_0 t} dt \\
 		&= f_0 \int_{-\frac{1}{2f_0}}^{\frac{1}{2f_0}}
 			A_0\abs{\sin\brak{2\pi f_0 t}}
-			\cos(2\pi kf_0t) dt \\
+			\cos(2\pi kf_0 t) dt \\
 		& \quad + jf_0 \int_{-\frac{1}{2f_0}}^{\frac{1}{2f_0}}
 			A_0\abs{\sin\brak{2\pi f_0 t}}
-			\sin(2\pi kf_0t) dt \\
+			\sin(2\pi kf_0 t) dt \\
 		&= f_0 \int_{-\frac{1}{2f_0}}^{\frac{1}{2f_0}}
 			A_0\abs{\sin\brak{2\pi f_0 t}}
-			\cos(2\pi kf_0t) dt + 0 \\
+			\cos(2\pi kf_0 t) dt + 0 \\
 		&= 2f_0 \int_{0}^{\frac{1}{2f_0}}
 			A_0\sin\brak{2\pi f_0 t}
-			\cos(2\pi kf_0t) dt \\
-		&= f_0 A_0 \int_{0}^{\frac{1}{2f_0}} \sin \brak{2\pi\brak{n+1}f_0t} dt \\
-		& \quad - f_0A_0\int_{0}^{\frac{1}{2f_0}}\sin\brak{2\pi\brak{n-1}f_0t} dt \\
+			\cos(2\pi kf_0 t) dt \\
+		&= f_0 A_0 \int_{0}^{\frac{1}{2f_0}} \sin \brak{2\pi\brak{n+1}f_0 t} dt \\
+		& \quad - f_0 A_0\int_{0}^{\frac{1}{2f_0}}\sin\brak{2\pi\brak{n-1}f_0 t} dt \\
 		&= f_0 A_0\frac{1+\brak{-1}^n}{2\pi f_0}\brak{\frac{1}{n+1} - \frac{1}{n-1}} \\
 		&= 
 		\begin{cases}
@@ -227,7 +222,7 @@ Consider $A_0 =12$ and $f_0 = 50$ for all numerical calculations.
 	\end{align*}
 
 
-\item Verify \eqref{eq:10-orig-diff-def} using python. \\
+\item Verify~\eqref{eq:10-orig-diff-def} using python. \\
 	\solution \\
 	The following code block yields the graph
 	\begin{lstlisting}
@@ -247,12 +242,12 @@ wget https://raw.githubusercontent.com/Sigma1084/EE3900/master/charger/codes/Ex1
 	\end{align}
 	and obtain the formulae for $a_k$ and $b_k$. \\
 	\solution\\
-	\solution From \eqref{eq:one-Z-complex},
+	\solution From~\eqref{eq:one-Z-complex},
 	\begin{align*}
-		x(t) &= \sum_{k = -\infty}^{\infty}c_ke^{j2\pi kf_0 t} \\
-		&= c_0 + \sum_{k = 1}^{\infty} \brak{c_ke^{j2\pi kf_0t} + c_{-k}e^{-j2\pi kf_0t}} \\
-		&= c_0 + \sum_{k = 1}^{\infty} \brak{c_k + c_{-k}}\cos\brak{2\pi kf_0t} \\
-		& \quad + \sum_{k = 0}^{\infty}\brak{c_k - c_{-k}}\sin\brak{2\pi kf_0t}
+		x(t) &= \sum_{k = -\infty}^{\infty}c_k e^{j2\pi kf_0 t} \\
+		&= c_0 + \sum_{k = 1}^{\infty} \brak{c_k e^{j2\pi kf_0 t} + c_{-k}e^{-j2\pi kf_0 t}} \\
+		&= c_0 + \sum_{k = 1}^{\infty} \brak{c_k + c_{-k}}\cos\brak{2\pi kf_0 t} \\
+		& \quad + \sum_{k = 0}^{\infty}\brak{c_k - c_{-k}}\sin\brak{2\pi kf_0 t}
 	\end{align*}
 	Hence, for \( k \ge 0 \),
 	\begin{align}
@@ -267,10 +262,10 @@ wget https://raw.githubusercontent.com/Sigma1084/EE3900/master/charger/codes/Ex1
 	\end{align}
 	
 
-\item Find $a_k$ and $b_k$ for \eqref{eq:10-orig-diff-def} \\
+\item Find $a_k$ and $b_k$ for~\eqref{eq:10-orig-diff-def} \\
 	\solution \\
-	Using the expression for \( c_k \), from \eqref{eq:ck} \\
-	and using \eqref{eq:ak} and \eqref{eq:bk}, we have,
+	Using the expression for \( c_k \), from~\eqref{eq:ck} \\
+	and using~\eqref{eq:ak} and~\eqref{eq:bk}, we have,
 	\begin{align*}
 		a_k &= 
 			\begin{cases}
@@ -281,9 +276,7 @@ wget https://raw.githubusercontent.com/Sigma1084/EE3900/master/charger/codes/Ex1
 		b_k &= 0
 	\end{align*}
 
-\item Verify 
-\eqref{eq:one-Z-real}
-using python.
+\item Verify~\eqref{eq:one-Z-real} using python.
 
 \end{enumerate}
 
@@ -327,8 +320,10 @@ using python.
 	Using the definition of inverse Fourier Transform,
 	\[ g(t) = \int_{-\infty}^\infty G(f) e^{j2\pi ft} df \]
 	Now, putting \( -f \coloneqq t, \ t \coloneqq f \implies df = dt \), \\
-	\[ g(-f) = \int_{-\infty}^\infty G(t) e^{-j2\pi ft} dt \]
-	\[ \implies G(t) \system{F} g(-f) \numberthis \label{eq:G-to-g} \]
+	\begin{gather*}
+	    g(-f) = \int_{-\infty}^\infty G(t) e^{-j2\pi ft} dt\\
+	    \implies G(t) \system{F} g(-f) \numberthis \label{eq:G-to-g}\\
+	\end{gather*}
 
 
 \item $\delta(t)\system{F}?$ \\
@@ -340,30 +335,32 @@ using python.
 	\end{align*}
 
 
-\item $e^{-j2\pi f_0t}\system{F}?$ \\
+\item $e^{-j2\pi f_0 t}\system{F}?$ \\
 	\solution Suppose \( g(t) \system{F} G(f) \)
 	\begin{align*}
 		g(t) e^{-j2\pi f_0 t} \system{F} & \intinf g(t) e^{-j2 \pi \brak{f_0 + f} t} dt \\
 		&= G(f + f_0)
 	\end{align*}
-	Now, using \eqref{eq:fourier-delta} and \eqref{eq:G-to-g} , we can get,
+	Now, using~\eqref{eq:fourier-delta} and~\eqref{eq:G-to-g} , we can get,
 	\[ \delta(t) \system{F} 1 \system{F} \delta(-t) \]
 	Putting \( g(t) = 1 \) and hence, \( G(f) = \delta(-f) = \delta(f) \), 
-	we get \( G(f + f_0) = \delta(f+f_0) \). Hence,
-	\[ e^{-j2\pi f_0t} \system{F} \delta(f+f_0) \numberthis \label{eq:fourier-exp} \]
-	
+	we get \( G(f + f_0) = \delta(f+f_0) \).
+	Hence,
+	\[ e^{-j2\pi f_0 t} \system{F} \delta(f+f_0) \numberthis \label{eq:fourier-exp} \]
 
-\item $\cos(2\pi f_0t)\system{F}?$ \\
+
+\item $\cos(2\pi f_0 t)\system{F}?$ \\
 	\solution We can write
-	\[ \cos(2\pi f_0t) = \frac{1}{2} \brak{e^{j2\pi f_0t} + e^{-j2\pi f_0t}} \]
+	\[ \cos(2\pi f_0 t) = \frac{1}{2} \brak{e^{j2\pi f_0 t} + e^{-j2\pi f_0 t}} \]
 	Using \eqref{eq:fourier-exp} and the linearity of Fourier Transform, we get,
-	\[ \cos(2\pi f_0t) \system{F} \frac{1}{2}\Big{(} \delta(f-f_0) + \delta(f+f_0) \Big{)} \]
+	\[ \cos(2\pi f_0 t) \system{F} \frac{1}{2}\Big{(} \delta(f-f_0) + \delta(f+f_0) \Big{)} \]
 
 
-\item Find the Fourier Transform of $x(t)$ and plot it.  Verify using python. \\
+\item Find the Fourier Transform of $x(t)$ and plot it.
+	Verify using python. \\
 	\solution
-	Using \eqref{eq:one-Z-complex}, we have,
-	\[ x(t) = \sum_{k = -\infty}^{\infty}c_ke^{j2\pi kf_0 t} \]
+	Using~\eqref{eq:one-Z-complex}, we have,
+	\[ x(t) = \sum_{k = -\infty}^{\infty}c_k e^{j2\pi kf_0 t} \]
 	Using \eqref{eq:fourier-exp}, we get, 
 	\begin{align*}
 		x(t) \system{F} & \sum_{k=-\infty}^\infty c_k \delta(f-kf_0) \\
@@ -390,7 +387,7 @@ using python.
 	$\sinc{t}\system{F} ?$
 	Verify using python. \\
 	\solution \\
-	Using \eqref{eq:rect-to-sinc}, and \eqref{eq:G-to-g}, we get,
+	Using \eqref{eq:rect-to-sinc}, and~\eqref{eq:G-to-g}, we get,
 	\[ \sinc{t} \system{F} \rect{-f} = \rect{f} \numberthis \label{eq:sinc-to-rect} \]
 
 
