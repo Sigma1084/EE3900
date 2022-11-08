@@ -7,7 +7,6 @@
 \usepackage{caption}
 \singlespacing
 \usepackage[cmex10]{amsmath}
-\usepackage{mathtools}
 \usepackage{hyperref}
 \usepackage{amsthm}
 \usepackage{mathrsfs}
@@ -26,6 +25,8 @@
 
 % Tikz, Circuitikz
 \usepackage{circuitikz}
+\usepackage{graphicx}
+\usepackage{amssymb}
 
 \DeclareMathOperator*{\Res}{Res}
 \renewcommand\thesection{\arabic{section}}
@@ -55,17 +56,13 @@ columns=fullflexible
 \newtheorem{corollary}[theorem]{Corollary}
 \newtheorem{example}{Example}[section]
 \newtheorem{definition}{Definition}[section]
-\newcommand{\BEQA}{\begin{eqnarray}}
-\newcommand{\EEQA}{\end{eqnarray}}
 \newcommand{\define}{\stackrel{\triangle}{=}}
 \newcommand{\myvec}[1]{\ensuremath{\begin{pmatrix}#1\end{pmatrix}}}
 \newcommand{\mydet}[1]{\ensuremath{\begin{vmatrix}#1\end{vmatrix}}}
+\newcommand\numberthis{\addtocounter{equation}{1}\tag{\theequation}}
 
 \bibliographystyle{IEEEtran}
 
-\providecommand{\nCr}[2]{\,^{#1}C_{#2}} % nCr
-\providecommand{\nPr}[2]{\,^{#1}P_{#2}} % nPr
-\providecommand{\mbf}{\mathbf}
 \providecommand{\pr}[1]{\ensuremath{\Pr\left(#1\right)}}
 \providecommand{\qfunc}[1]{\ensuremath{Q\left(#1\right)}}
 \providecommand{\sbrak}[1]{\ensuremath{{}\left[#1\right]}}
@@ -90,7 +87,6 @@ columns=fullflexible
 \providecommand{\laplace}{\overset{\mathcal{L}}{ \longrightarrow}}
 \providecommand{\system}{\overset{\mathcal{H}}{ \longleftrightarrow}}
 \newcommand{\solution}{\noindent \textbf{Solution: }}
-\providecommand{\dec}[2]{\ensuremath{\overset{#1}{\underset{#2}{\gtrless}}}}
 \numberwithin{equation}{section}
 \makeatletter
 \@addtoreset{figure}{problem}
@@ -154,7 +150,7 @@ This manual provides a simple introduction to Transforms
 	$q_2 \, \mu C$.
 	\begin{figure}[!ht]
 		\centering
-		\includegraphics[width=\columnwidth]{figs/ckt.jpg}
+		\includegraphics[width=\columnwidth]{figs/ckt}
 		\caption{}
 		\label{fig:ckt}
 	\end{figure}
@@ -181,7 +177,8 @@ This manual provides a simple introduction to Transforms
 
 \item Find $q_1$. \\
 	\solution\\
-	Current through the capacitor is $0$ at steady state. So, current only flows in the outer loop.\\
+	Current through the capacitor is $0$ at steady state.
+	So, current only flows in the outer loop.\\
 	\begin{circuitikz}[scale=0.6] \draw
 		(0, 0) to [short] (10, 0)
 		(5, 3) to [R=$2\ohm$] (10, 3)
@@ -524,53 +521,266 @@ wget https://github.com/Sigma1084/EE3900/blob/master/cktsig/code/Ex3.spice
 \item In Fig. \ref{fig:ckt}, Consider the case when $S$ is switched to
 	$Q$ right in the beginning. Formulate the differential equation. \\
 	\solution\\
+	\begin{circuitikz}[scale=0.6] \draw
+		(0, 0) to [short] (10, 0)
+		(5, 0) to [C=$C_0$, i<=$i_1$] (5, 3)
+		(5, 3) to [R=$R_2$] (10, 3)
+		(0, 3) to [R=$R_1$, i<=$i_2$] (5, 3)
+		(10, 3) to [battery1, l=$V_2$, i<=$i$] (10, 0)
+		(0, 0) to [short] (0, 3)
+		;
+	\end{circuitikz}
+	\linebreak
+
 	Special Case of \eqref{eq:q2_diff}, putting $V_1 = 0$, we get
 	\begin{align}
-		i_2(t) \ R_1 - \int_0^t \frac{i_1(t)}{C_0} dt &= 0 \label{eq:q4_diff} \\
-		-i(t) \ R_2 + V_2 - \int_0^t \frac{i_1(t)}{C_0} dt &= 0
+		i_2(t) \ R_1 - \int_0^t \frac{i_1(t)}{C_0} dt &= 0 \\
+		V_2 - i(t) \ R_2 - i_2(t) \ R_1 &= 0 \\
+		-i(t) \ R_2 + V_2 - \int_0^t \frac{i_1(t)}{C_0} dt &= 0 \label{eq:q4-diff-init}
 	\end{align}
-	The above equations after transformation to s-domain
-	\begin{align}
-		R_1 I_2(s) - \frac{I_1(s)}{sC_0} &= 0 \label{eq:q4_diff_lap} \\
-		-R_2 I(s) + \frac{V_2}{s} - \frac{I_1(s)}{sC_0} &= 0 
-	\end{align}
+	After transformation to s-domain, we get
+	\begin{align*}
+		R_1 I_2(s) - \frac{I_1(s)}{sC_0} &= 0 \\
+		-R_2 I(s) + V_2(s) - \frac{I_1(s)}{sC_0} &= 0 
+	\end{align*}
+	Differentiating w.r.t. time, we get,
+	\begin{align*}
+		R_1 \frac{di_2(t)}{dt} - \frac{i_1(t)}{C_0} &= 0 \\
+		R_2 \frac{di(t)}{dt} - \frac{i_1(t)}{C_0} &= 0
+	\end{align*}
+	We need voltages in the final equation.
+	\begin{align*}
+		V_{C_0} &= \frac{1}{C_0}q \implies \frac{dV_{C_0}}{dt} = \frac{1}{C_0}i_1 \\
+		i(t) &= i_1(t) + i_2(t) = C_0 \frac{dV_{C_0}}{dt} + \frac{1}{R_1} V_{C_0} 
+	\end{align*}
+	And this implies, equation \eqref{eq:q4-diff-init} corresponds to
+	\begin{align*}
+		-\brak{C_0 \frac{dV_{C_0}}{dt} + \frac{1}{R_1} V_{C_0}}R_2 + V_2 &- V_{C_0} = 0 \\
+		\frac{dV_{C_0}}{dt} + \frac{V_{C_0}}{C_0} \brak{\frac{1}{R_1} + \frac{1}{R_2}}
+			&= \frac{V_2}{C_0 R_2} \\
+		\frac{dV_{C_0}}{dt} + \frac{V_{C_0}}{\frac{C_0R_1R_2}{R_1+R_2}} 
+			&= \frac{V_2}{C_0 R_2} \\ 
+		\implies \frac{dV_{C_0}}{dt} + \frac{V_{C_0}}{\tau} 
+			&= \frac{V_2}{C_0 R_2} \numberthis \label{eq:q4-diff}
+	\end{align*}
+	Here, \( \tau = \frac{C_0R_1R_2}{R_1+R_2} \) is the time constant of the circuit. \\
+	
 
-
-\item Find $H(s)$ considering the ouput voltage at the capacitor. \\
+\item Find $H(s)$ considering the output voltage at the capacitor. \\
 	\solution \\
 	Recall that \( H(s) = \frac{V_{C_0}(s)}{V_2(s)} \) \\
 	Using KCL at point P, after s-domain transform, we have,
-	\[ \frac{V_{C_0}(s)}{R_1} + \frac{V_{C_0}(s)}{\frac{1}{sC_0}} + 
-		\frac{V_{C_0}(s) - V_2(s)}{R_2} = 0 \]
-	\[ V_{C_0}(s) \brak{\frac{1}{R_1} + sC_0 + \frac{1}{R_2}} = \frac{V_2(s)}{R_2} \]
-	\[ \frac{V_{C_0}(s)}{V_2(s)} = H(s) = \frac{1}{R_2\brak{\frac{1}{R_1} +
-		\frac{1}{R_2} + sC_0}} \]
+	\begin{gather*}
+	    \frac{V_{C_0}(s)}{R_1} + \frac{V_{C_0}(s)}{\frac{1}{sC_0}} +
+		\frac{V_{C_0}(s) - V_2(s)}{R_2} = 0\\
+	    V_{C_0}(s) \brak{\frac{1}{R_1} + sC_0 + \frac{1}{R_2}} = \frac{V_2(s)}{R_2}\\
+	    \frac{V_{C_0}(s)}{V_2(s)} = H(s) = \frac{1}{R_2\brak{\frac{1}{R_1} +
+		\frac{1}{R_2} + sC_0}}\\
+	    H(s) = \frac{1}{C_0 R_2\brak{\frac{1}{\tau} + s}} \numberthis \label{eq:q4-Hs}\\
+	\end{gather*}
 
 
-\item Plot $H(s)$.  What kind of filter is it? \\
+\item Plot $H(s)$.
+What kind of filter is it? \\
 	\solution The following code yields the graph \\
-	\begin{listing}
+	%\begin{listing}
+	%\end{listing}
+	Putting \( s = j\omega \) in the above equation, we can see that  \\
+	\( |H(j\omega) \) is decreasing with increasing frequency. \\
+	Clearly, H(s) is a low pass filter \\
 
-	\end{listing}
-	Clearly, H(s) is a low pass filter
-	
 
 \item Using trapezoidal rule for integration, formulate the difference equation by considering
 	\begin{align}
 		y(n) = y(t)\vert_{t=n}
 	\end{align}
 	\solution \\
+	From equation \eqref{eq:q4-diff}, putting \( V = V_{C_0} \) we have
+	\[ \frac{dV}{dt} + \frac{V}{\tau} = \frac{V_2}{C_0 R_2}  \]
+	where \( \tau = \frac{C_0R_1R_2}{R_1+R_2} \) is the time constant. \\
 
+	Trapezoidal rule applied to \( y' = f(t, y) \) gives 
+	\[ y_{{n+1}} - y_{n} = \frac{1}{2} h {\Big (}f(t_{n},y_{n})+f(t_{{n+1}},y_{{n+1}}){\Big )} \]
+	where \( h = t_{{n+1}} - t_{n} \) is the step size. \\
 
-
-	\item Find $H(z)$.
-
-
-	\item How can you obtain $H(z)$ from $H(s)$?
+	Using the trapezoidal rule on \eqref{eq:q4-diff}, we get
+	\[ \frac{v_{n+1} - v_n}{t_{n+1} - t_n} = \frac{1}{2} \sbrak{\frac{V_2 \Big{(}u(n) + u(n+1)\Big{)} }
+		{C_0R_2} - \frac{v_n + v_{n+1}}{\tau} } \]
+	Now, putting \( t_n = n \ \forall\ n \), we get the difference equation
+	\begin{multline*}
+		v_{n+1} - v_n  + \frac{v_n + v_{n+1}}{2\tau} = 
+			\frac{V_2}{2C_0 R_2} \Big{(}u(n) + u(n+1)\Big{)}
+	\end{multline*}
+	\begin{multline*}
+		v_{n+1}\brak{1 + \frac{1}{2\tau}} - v_n\brak{1 - \frac{1}{2\tau}} = \\
+			\frac{V_2}{2C_0 R_2} \Big{(}u(n) + u(n+1)\Big{)} \numberthis \label{eq:q4-difference}
+	\end{multline*}
+	where \( v_0 = 0 \) is the initial condition. \\
+	We get \( u(n) \) since \( V_2 = 0 \) when \( t < 0 \). \\
 	
 
-	\end{enumerate}
-\end{document}
+\item Find $H(z)$. \\
+	\solution \\
+	Taking \( \mathcal{Z} \)-Transform on \eqref{eq:q4-difference}, we get
+	\[ z V(z) \brak{1 + \frac{1}{2\tau}} - V(z)\brak{1 - \frac{1}{2\tau}}
+		= \frac{V_2}{2C_0R_2} \frac{1 + z}{1 - z^{-1}} \]
+	Now since \( V_2 \) is constant at \( t > 0 \), we have 
+	\( \mathcal{Z} (V_2) = \mathcal{Z}(V_2 u(n)) = \frac{V_2}{1 - z^{-1}} \) \\
+	We can substitute \( V_2 \) in the above equation and since
+		we know \( H(z) = \frac{V(z)}{V_2(z)} \), we get
+	\begin{gather*}
+	    H(z) \brak{\frac{2 \tau - 1}{2\tau}} \sbrak{\frac{2\tau + 1}{2\tau - 1} - z^{-1}}
+		= \frac{1 + z^{-1}}{2C_0 R_2}\\
+	    H(z) =  \frac{1}{C_0 R_2} \brak{\frac{\tau}{2\tau - 1} }
+		\frac{1 + z^{-1}}{\frac{2\tau+1}{2\tau-1} - z^{-1} }\\
+	    H(z) = \brak{\frac{\tau}{C_0 R_2}} \frac{1 + z^{-1}}{(2\tau+1) - (2\tau-1)z^{-1}}
+		\numberthis \label{eq:q4-Hz}\\
+	\end{gather*}
+	\( |z| > 1 \) and \( |z| > \frac{2\tau-1}{2\tau+1} \implies \) ROC is \( |z| > 1 \) \\
 
+
+\item How can you obtain $H(z)$ from $H(s)$? \\
+	\solution \\
+	Using bilear transform on \eqref{eq:q4-Hs}, \\
+	setting \( \displaystyle s \coloneqq \frac{2}{T} \frac{1-z^{-1}}{1+z^{-1}} \), 
+	where \( T \) is the step size.
+	\begin{align*}
+		H(s) &= \frac{1}{R_2 \brak{\frac{1}{R_1} + \frac{1}{R_2} + 
+			\frac{2}{T} \frac{1-z^{-1}}{1+z^{-1}} C_0 }} \\
+		H(s) &= \frac{1}{R_2C_0 \brak{\frac{1}{\tau} + 
+			\frac{2}{T} \frac{1-z^{-1}}{1+z^{-1}}}} \quad 
+			\brak{\text{Since } \tau = \dfrac{C_0R_1R_2}{R_1+R_2}} \\
+		H(s) &= \brak{\frac{\tau}{C_0R_2}} \frac{T(1 + z^{-1})}{T+Tz^{-1} + 2\tau -2\tau z^{-1}} \\
+		H(s) &= \brak{\frac{\tau}{C_0R_2}} \frac{T(1 + z^{-1})}{(2\tau+T) - (2\tau-T)z^{-1}}
+	\end{align*}
+	Putting step size \( T = 1 \), we get \( H(z) \) \\
+
+	Observe that
+	\[ \displaystyle H(s) \Bigg{|}_{s=\frac{2}{T} \frac{1-z^{-1}}{1+z^{-1}}} = H(z) \]
+
+
+\item Find \( v(n) \).
+Verify using ngspice and the difference equation. \\
+\solution \\
+	We know that \( V(z) = H(z) V_2(z) \) and \( V_2(z) = \frac{V_2}{1 - z^{-1}} \) \\
+	Using~\eqref{eq:q4-Hz}, we get
+	\[
+		V(z) = \frac{1}{C_0 R_2\brak{\frac{1}{\tau} +
+		\frac{2}{T} \frac{1-z^{-1}}{1+z^{-1}}}} \frac{V_2}{1 - z^{-1}}
+	\]
+	We can use Residue Theorem to find the inverse \( \mathcal{Z} \) transform
+	\begin{gather*}
+		x(n) = \left[ \sum_{\text{Pole } z_i} \text{Residue of } X(z)z^{n-1} \text{ at } z_i \right]\\
+	    \therefore v(n) = \sum_{\text{Pole } z_i} \left[ \frac{V_2}{C_0 R_2} \frac{(z-z_i)z^{n-1}}{\brak{\frac{1}{\tau} +
+		\frac{2}{T} \frac{1-z^{-1}}{1+z^{-1}}}} \frac{1}{1 - z^{-1}} \right]_{z=z_i}
+	\end{gather*}
+
+	The only poles are \( z = 1 \) and \( z = \frac{2\tau - T}{2\tau + T} \)
+	At \( z = 1 \), we get,
+	\begin{align*}
+		& \left. \frac{V_2}{C_0 R_2} \frac{(z-1)z^{n-1}}{\brak{\frac{1}{\tau} +
+		\frac{2}{T} \frac{1-z^{-1}}{1+z^{-1}}}} \frac{1}{1 - z^{-1}} \right|_{z=1} \\
+		&= \left. \frac{V_2}{C_0 R_2} \frac{z^n}{\brak{\frac{1}{\tau} +
+		\frac{2}{T} \frac{1-z^{-1}}{1+z^{-1}}}} \right|_{z=1} \\
+		&= \frac{V_2\tau}{C_0 R_2}
+	\end{align*}
+
+	At \( z = \frac{2\tau - T}{2\tau + T} \), we get,
+	\begin{align*}
+		& \left. \frac{V_2}{C_0 R_2} \frac{(z-\frac{2\tau - T}{2\tau + T}) \ z^{n-1}}{\brak{\frac{1}{\tau} +
+		\frac{2}{T} \frac{1-z^{-1}}{1+z^{-1}}}} \frac{1}{1 - z^{-1}} \right|_{z=\frac{2\tau - T}{2\tau + T}} \\
+		&= \left. \frac{V_2 T\tau}{C_0 R_2} \frac{(z-\frac{2\tau - T}{2\tau + T})}
+		{\brak{2\tau + T - (2\tau - T)z^{-1}}}
+		\frac{z^{n-1}(1+z^{-1})}{1 - z^{-1}} \right|_{z=\frac{2\tau - T}{2\tau + T}} \\
+		&= \left. \frac{V_2}{C_0 R_2} \cdot \frac{\tau T z^n} {2\tau + T}
+		\cdot \frac{1+z^{-1}}{1 - z^{-1}} \right|_{z=\frac{2\tau - T}{2\tau + T}} \\
+		&= \frac{V_2}{C_0 R_2} \cdot \frac{\tau T z^n} {2\tau + T}
+		\cdot \frac{\frac{2\tau - T}{2\tau + T} + 1}{\frac{2\tau - T}{2\tau + T} - 1} \\
+		&= \frac{V_2}{C_0 R_2} \cdot \frac{\tau T z^n} {2\tau + T}
+		\cdot \frac{4 \tau}{-2 T} \\
+		&= -\frac{V_2 \tau}{C_0 R_2} \cdot \frac{2\tau} {2\tau + T} \cdot z^n \\
+		&= -\frac{V_2 \tau}{C_0 R_2} \cdot \frac{1} {1 + \frac{T}{2\tau}} \cdot \brak{\frac{2\tau - T}{2\tau + T}}^n \\
+	\end{align*}
+
+	Hence, we get
+	\[
+		v(n) = \frac{V_2 \tau}{C_0 R_2} \left[ 1 - \frac{1} {1 + \frac{T}{2\tau}}
+		\cdot \brak{\frac{2\tau - T}{2\tau + T}}^n \right] u(n)
+	\]
+	ROC is \( z > 1 \)
+
+	Taking the sampling frequency, \( T \) to be low and plugging in values, we get
+	\[ y(n) \approx \frac{2}{3} \brak{1 - \frac{1-7.5\times10^5 n}{1+7.5\times10^5 n}}u(n) \]
+
+	Now, considering the Laplace Transform
+	\[ V(s) = H(s) \cdot V_2(s) = \frac{5\times10^5}{s+1.5\times10^6} \frac{2}{s} \\ \]
+
+	Taking partial fractions, we get
+	\[ V(s) = \frac{10^6}{1.5\times10^6} \brak{\frac{1}{s} - \frac{1}{s+1.5\times10^6}} \]
+
+	Taking the inverse Laplace Transform, we get
+	\[ y(t) = \frac{2}{3}\brak{1 - e^{-1.5\times10^6 t}}u(t) \]
+	with ROC \( s > 0 \)
+
+	Now, approximating,
+	\begin{align*}
+		e^{-1.5\times 10^6 t} &= \frac{e^{-0.75 \times 10^6 t}}{e^{0.75 \times 10^6 t}} \\
+		&\approx \frac{1-7.5\times10^5 t}{1+7.5\times10^5 t} && \text{when } t \ll 10^{-6}
+	\end{align*}
+
+	\[ \implies y(t) \approx \frac{2}{3} \brak{1 - \frac{1-7.5\times10^5 t}{1+7.5\times10^5 t}} u(t) \]
+	We just proved that \( y(n) = y(t)|_{t=n} \)
+	And hence, verified the correctness of Bilinear Transform.
+
+	The following code yields the graph
+	\begin{lstlisting}
+wget https://github.com/Sigma1084/EE3900/blob/master/cktsig/code/Ex4_plot.py
+	\end{lstlisting}
+
+	\begin{figure}[!ht]
+		\centering
+		\includegraphics[width=\columnwidth]{figs/Ex4}
+		\caption {}
+		\label{fig:q4_v}
+	\end{figure}
+
+\item Find \( y(n) \) using the difference equation and verify \\
+	\solution \\
+	Using the equation~\eqref{eq:q4-difference}, we get
+	\begin{multline*}
+		v_{n+1}\brak{1 + \frac{1}{2\tau}} - v_n\brak{1 - \frac{1}{2\tau}} = \\
+			\frac{V_2}{2C_0 R_2} \Big{(}u(n) + u(n+1)\Big{)}
+	\end{multline*}
+	And hence, we have
+	\[
+		v_{n+1} = v_n\brak{\frac{2\tau - 1}{2\tau + 1}} + \brak{\frac{2\tau}{2\tau + 1}}
+		\frac{V_2}{2C_0 R_2} \Big{(}u(n) + u(n+1)\Big{)}
+	\]
+	Since \( v_0 = 0 \) and \( \forall n \geq 0 \), \( u(n) + u(n+1) = 2 \),
+	we can solve the linear difference equation.
+
+	For all \( n \geq 0 \)
+	\[
+		v_{n+1} = -\frac{7.5 \times 10^5 - 1}{7.5 \times 10^5 + 1} v_n + \frac{10^6}{7.5 \times 10^5 + 1}
+	\]
+
+	Write \( v_{n+1} = a v_n + b \)
+	\begin{align*}
+		v_1 &= a v_0 + b = b \\
+		v_2 &= a v_1 + b = ab + b = b(a + 1) \\
+		v_3 &= a v_2 + b = a^2 b + ab + b = b(a^2 + 2a + 1) \\
+		\vdots \\
+		v_n &= a^n v_0 + b \sum_{k=0}^{n-1} a^k = b \brak{ \frac{a^n - 1}{a - 1}}
+	\end{align*}
+
+	\begin{gather*}
+	    \implies v_n = \frac{10^6}{2 \times 7.5 \times 10^5} \ \times \
+		\brak{1 - \brak{-\frac{7.5 \times 10^5 - 1}{7.5 \times 10^5 + 1}}^n} \\
+	    \implies v_n = \frac{2}{3} \brak{1 -
+		\brak{\frac{1 - 7.5 \times 10^5}{1 + 7.5 \times 10^5}}^n} u(n)
+	\end{gather*}
+	Notice that this is the same equation we got from earlier
+
+\end{enumerate}
 
 \end{document}
