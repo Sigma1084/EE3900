@@ -222,17 +222,17 @@ Consider $A_0 =12$ and $f_0 = 50$ for all numerical calculations.
 	\end{align*}
 
 
-\item Verify~\eqref{eq:10-orig-diff-def} using python. \\
-	\solution \\
-	The following code block yields the graph
+\item Verify~\eqref{eq:10-orig-diff-def} and~\eqref{eq:one-Z-complex} using python. \\
+	\solution
+	The following code yields the graph
 	\begin{lstlisting}
-wget https://raw.githubusercontent.com/Sigma1084/EE3900/master/charger/codes/Ex1_1_plotxt.py
-	\end{lstlisting}	
-	% \begin{figure}[!ht]
-    %\includegraphics[width=\columnwidth]{figs/2_3.png}
-    	% \caption{Verification of \eqref{eq:one-Z-complex}.}
-    	% \label{fig:ver-complex}
-	% \end{figure}
+wget https://raw.githubusercontent.com/Sigma1084/EE3900/master/charger/codes/Ex2_3_verify_xt.py
+	\end{lstlisting}
+	\begin{figure}[!ht]
+    \includegraphics[width=\columnwidth]{figs/Ex2_3_verify_xt}
+		\caption{Verification of~\eqref{eq:one-Z-complex}.}
+		\label{fig:verify_xt}
+	\end{figure}
 	
 
 \item Show that 
@@ -247,7 +247,7 @@ wget https://raw.githubusercontent.com/Sigma1084/EE3900/master/charger/codes/Ex1
 		x(t) &= \sum_{k = -\infty}^{\infty}c_k e^{j2\pi kf_0 t} \\
 		&= c_0 + \sum_{k = 1}^{\infty} \brak{c_k e^{j2\pi kf_0 t} + c_{-k}e^{-j2\pi kf_0 t}} \\
 		&= c_0 + \sum_{k = 1}^{\infty} \brak{c_k + c_{-k}}\cos\brak{2\pi kf_0 t} \\
-		& \quad + \sum_{k = 0}^{\infty}\brak{c_k - c_{-k}}\sin\brak{2\pi kf_0 t}
+		& \quad + j\sum_{k = 0}^{\infty}\brak{c_k - c_{-k}}\sin\brak{2\pi kf_0 t}
 	\end{align*}
 	Hence, for \( k \ge 0 \),
 	\begin{align}
@@ -257,7 +257,7 @@ wget https://raw.githubusercontent.com/Sigma1084/EE3900/master/charger/codes/Ex1
 			c_k + c_{-k} & k > 0
 		\end{cases}
 		\label{eq:ak} \\
-		b_k &= c_k - c_{-k}
+		b_k &= j \brak{c_k - c_{-k}}
 		\label{eq:bk}
 	\end{align}
 	
@@ -276,7 +276,19 @@ wget https://raw.githubusercontent.com/Sigma1084/EE3900/master/charger/codes/Ex1
 		b_k &= 0
 	\end{align*}
 
-\item Verify~\eqref{eq:one-Z-real} using python.
+\pagebreak
+
+\item Verify~\eqref{eq:one-Z-real} using python \\
+	\solution \\
+	The following code block yields the graph
+	\begin{lstlisting}
+wget https://raw.githubusercontent.com/Sigma1084/EE3900/master/charger/codes/Ex2_3_verify_xt_real.py
+	\end{lstlisting}
+	\begin{figure}[!ht]
+	\includegraphics[width=\columnwidth]{figs/Ex2_4_verify_xt_real}
+		\caption{Verification of~\eqref{eq:one-Z-real}.}
+		\label{fig:verify_xt_real}
+	\end{figure}
 
 \end{enumerate}
 
@@ -361,11 +373,20 @@ wget https://raw.githubusercontent.com/Sigma1084/EE3900/master/charger/codes/Ex1
 	\solution
 	Using~\eqref{eq:one-Z-complex}, we have,
 	\[ x(t) = \sum_{k = -\infty}^{\infty}c_k e^{j2\pi kf_0 t} \]
-	Using \eqref{eq:fourier-exp}, we get, 
+	Using~\eqref{eq:fourier-exp}, we get,
 	\begin{align*}
 		x(t) \system{F} & \sum_{k=-\infty}^\infty c_k \delta(f-kf_0) \\
 		&= \frac{2A_0}{\pi} \sum_{k=-\infty}^\infty \frac{\delta(f-2kf_0)}{1-4k^2} \\
 	\end{align*}
+	\begin{lstlisting}
+wget https://raw.githubusercontent.com/Sigma1084/EE3900/master/charger/codes/Ex3_8_x-fourier.py
+	\end{lstlisting}
+	\begin{figure}[h]
+		\centering
+		\includegraphics[width=0.5\textwidth]{figs/Ex3_8_verify_xt_fourier}
+		\caption{Fourier Transform of $x(t)$}
+		\label{fig:verify_xt_fourier}
+	\end{figure}
 	
 
 \item Show that
@@ -400,7 +421,11 @@ wget https://raw.githubusercontent.com/Sigma1084/EE3900/master/charger/codes/Ex1
 
 
 \item Find $H(f)$ which transforms $x(t)$ to DC 5V. \\
-	\solution
+	\solution \\
+	We need \( H(f) \) to be a low pass filter that filters out even harmonics and leaves the
+	zero frequency behind \\
+	\( \rect{\frac{f}{2f_c}} \) is an ideal low pass filter with cutoff frequency \( f_c \).
+	Multiplying with a scalar factor \( \displaystyle \frac{5}{2A_0} \) gives us the required filter. \\
 
 \item Find $h(t)$.
 
