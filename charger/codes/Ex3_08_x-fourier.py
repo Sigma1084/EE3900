@@ -31,7 +31,7 @@ def main():
     plt.xlabel('f (Hz)')
     plt.ylabel('X(f)')
     plt.legend(['Original', 'Using c(k)'])
-    plt.savefig("../figs/Ex3_8_verify_xt_fourier.pdf")
+    plt.savefig("../figs/Ex3_08_verify_xt_fourier.pdf")
     plt.show()
 
 

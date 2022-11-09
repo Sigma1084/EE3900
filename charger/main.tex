@@ -23,6 +23,7 @@
 \usepackage{listings}
 \usepackage{graphicx}
 \usepackage{amssymb}
+\usepackage{siunitx}
 \let\vec\mathbf
 
 \DeclareMathOperator*{\Res}{Res}
@@ -41,6 +42,10 @@ breaklines=true,
 columns=fullflexible
 }
 
+
+\usepackage{tikz}
+\usetikzlibrary{shapes, arrows, positioning}
+\usepackage[RPvoltages]{circuitikz}
 
 
 \begin{document}
@@ -379,11 +384,11 @@ wget https://raw.githubusercontent.com/Sigma1084/EE3900/master/charger/codes/Ex2
 		&= \frac{2A_0}{\pi} \sum_{k=-\infty}^\infty \frac{\delta(f-2kf_0)}{1-4k^2} \\
 	\end{align*}
 	\begin{lstlisting}
-wget https://raw.githubusercontent.com/Sigma1084/EE3900/master/charger/codes/Ex3_8_x-fourier.py
+wget https://raw.githubusercontent.com/Sigma1084/EE3900/master/charger/codes/Ex3_08_x-fourier.py
 	\end{lstlisting}
 	\begin{figure}[h]
 		\centering
-		\includegraphics[width=0.5\textwidth]{figs/Ex3_8_verify_xt_fourier}
+		\includegraphics[width=0.5\textwidth]{figs/Ex3_08_verify_xt_fourier}
 		\caption{Fourier Transform of $x(t)$}
 		\label{fig:verify_xt_fourier}
 	\end{figure}
@@ -402,15 +407,32 @@ wget https://raw.githubusercontent.com/Sigma1084/EE3900/master/charger/codes/Ex3
 		&= \frac{1}{-j2\pi f} \brak{e^{-j\pi f} - e^{j\pi f}} \\
 		&= \frac{\sin(\pi f)}{\pi f} = \sinc{f}
 	\end{align*}
-	The following code yields the plot
+	\begin{lstlisting}
+wget https://raw.githubusercontent.com/Sigma1084/EE3900/master/charger/codes/Ex3_09_rect-fourier.py
+	\end{lstlisting}
+	\begin{figure}[h]
+		\centering
+		\includegraphics[width=0.5\textwidth]{figs/Ex3_09_verify_rect_fourier}
+		\caption{Fourier Transform of $x(t)$}
+		\label{fig:verify_rect_fourier}
+	\end{figure}
+
 
 \item 
 	$\sinc{t}\system{F} ?$
 	Verify using python. \\
 	\solution \\
-	Using \eqref{eq:rect-to-sinc}, and~\eqref{eq:G-to-g}, we get,
+	Using~\eqref{eq:rect-to-sinc}, and~\eqref{eq:G-to-g}, we get,
 	\[ \sinc{t} \system{F} \rect{-f} = \rect{f} \numberthis \label{eq:sinc-to-rect} \]
-
+	\begin{lstlisting}
+wget https://raw.githubusercontent.com/Sigma1084/EE3900/master/charger/codes/Ex3_10_sinc-fourier.py
+	\end{lstlisting}
+	\begin{figure}[h]
+		\centering
+		\includegraphics[width=0.5\textwidth]{figs/Ex3_10_verify_sinc_fourier}
+		\caption{Fourier Transform of $x(t)$}
+		\label{fig:verify_sinc_fourier}
+	\end{figure}
 
 \end{enumerate}
 
@@ -421,38 +443,181 @@ wget https://raw.githubusercontent.com/Sigma1084/EE3900/master/charger/codes/Ex3
 
 
 \item Find $H(f)$ which transforms $x(t)$ to DC 5V. \\
-	\solution \\
-	We need \( H(f) \) to be a low pass filter that filters out even harmonics and leaves the
-	zero frequency behind \\
-	\( \rect{\frac{f}{2f_c}} \) is an ideal low pass filter with cutoff frequency \( f_c \).
-	Multiplying with a scalar factor \( \displaystyle \frac{5}{2A_0} \) gives us the required filter. \\
+\solution The function $H(f)$ is a low pass filter which filters out
+even harmonics and leaves the zero frequency component behind.
+The rectangular function represents an ideal low pass filter.
+Suppose the cutoff frequency is $f_c = 50$ Hz, then
+\begin{align}
+    H(f) = \rect{\frac{f}{2f_c}} =
+    \begin{cases}
+        1 & \abs{f} < f_c \\
+        0 & \textrm{otherwise}
+    \end{cases}
+    \label{eq:Hf}
+\end{align}
+Multiplying by a scaling factor to get DC 5V,
+\begin{align*}
+    H(f) = \frac{\pi V_0}{2A_0}\rect{\frac{f}{2f_c}}
+\end{align*}
+where $V_0 = 5$ V\@.
 
-\item Find $h(t)$.
+\item Find $h(t)$. \\
+\solution Suppose $g(t)\system{F}G(f)$.
+Then, for some nonzero $a \in \mathbb{R}$
+\begin{align*}
+	g(at)&\system{F}\int_{-\infty}^{\infty}g(at)e^{-j2\pi ft}\, dt \\
+	&=\frac{1}{a}\int_{-\infty}^{\infty}g(u)e^{\brak{-j2\pi \frac{f}{a}t}}\, dt \\
+	&=\frac{1}{a}G\brak{\frac{f}{a}}
+	\label{eq:t-scaling}
+\end{align*}
+where we have substituted $u \coloneqq at$.
+\begin{align*}
+    \therefore h(t) = \frac{2\pi V_0}{A_0}f_c\sinc{2f_c t}
+\end{align*}
 
 
 \item Verify your result using  through convolution.
+\solution
+	Fourier transform of $x(t)$ and $h(t)$ respectively is
+	\begin{align}
+		X(f)&=\sum_{k=-\infty}^{\infty} \frac{2A_0}{\pi} \frac{\delta\brak{f+2kf_0}}{1-4k^2}\\
+		H(f)&=\frac{\pi V_0}{2A_0}\rect{\brak{\frac{f}{2f_c}}}\\
+		X(f) \times H(f)&=\sum_{k=-\infty}^{\infty} V_0 \frac{\delta\brak{f+2kf_0}}{1-4k^2} \times \rect{\brak{\frac{f}{2f_c}}}\\
+		X(f)\times H(f)&=\sum_{k=0}^{0} V_0 \frac{\delta\brak{f+2kf_0}}{1-4k^2}
+	\end{align}
+	Hence,
+	\begin{align}
+		X(f)\times H(f)&=V_0 \frac{\delta\brak{f}}{1-4 \times 0}\\
+		X(f)\times H(f)&=V_0 \delta\brak{f}
+	\end{align}
+Since $1\system{F} \delta\brak{0}$,
+Hence,
+\begin{align}
+	V_0 \delta\brak{t} \system{F} V_0\times 1 \\
+	\implies H(t) \circledast x(t)=V_0
+\end{align}
+Hence verified.
+\begin{figure}[!ht]
+	\includegraphics[width=\columnwidth]{figs/Ex4_convolution}
+	\caption{Convolution of the $x(t)$ and $h(t)$.}
+	\label{fig:convolution}
+\end{figure}
+The following python yields the plot~\ref{fig:convolution}.
+\begin{lstlisting}
+wget https://raw.githubusercontent.com/Sigma1084/EE3900/master/charger/codes/Ex4_convolution.py
+\end{lstlisting}
 
 
 \end{enumerate}
-
-
 
 \section{Filter Design}
 
 \begin{enumerate}[label=\thesection.\arabic*, ref=\thesection.\theenumi]
 
+\item Design a Butterworth filter for $H(f)$
 
-\item Design a Butterworth filter for $H(f)$.
+	\solution The transfer function of a Butterworth filter is given by
+	\begin{align}
+		\abs{H_n(f)} = \frac{1}{\sqrt{1+\brak{\frac{f}{f_c}}^{2n}}}
+	\end{align}
+	where $n$ is the order of the filter and $f_c$ is the cutoff frequency
 
+	Let the passband and stopband frequency thresholds be $\SI{50}{\hertz}$ and $\SI{100}{\hertz}$ and their corresponding attenuations be $-\SI{1}{\decibel}$ and $-\SI{5}{\decibel}$ respectively
+	\begin{align}
+		A_p &= 10 \log_{10}\abs{H_n(f_p)}^2 \\
+		&= -10\log_{10}\brak{1+\brak{\frac{f_p}{f_c}}^{2n}} \\
+		A_s &= -10\log_{10}\brak{1+\brak{\frac{f_s}{f_c}}^{2n}} \\
+		\implies n &=\frac{\log\brak{\frac{10^{-\frac{A_p}{10}}-1}{ 10^{-\frac{A_s}{10}}-1}}}{2 \log \brak{\frac{f_p}{f_s}}} \approx 1.53
+	\end{align}
 
-\item Design a Chebyschev filter for $H(f)$.
+	Hence, we choose a $2^{\mathrm{nd}}$ order Butterworth filter with
+	\begin{align}
+		f_c = \frac{f_p}{\brak{10^{-\frac{A_p}{10}}-1}^{\frac{1}{2n}}} \approx \SI{77.74}{\hertz}
+	\end{align}
 
+\item Design a Chebyschev filter for $H(f)$
 
-\item Design a circuit for your Butterworth filter.
+	\solution The transfer function of a Chebyshev filter is given by
+	\begin{align}
+		\abs{H_n(f)} =\frac{1}{\sqrt{1+\epsilon^{2}T_{n}^2\brak{\frac{f}{f_c}}}}
+	\end{align}
+	where $\epsilon$ is the ripple factor, $f_c$ is the cutoff frequency and $T_n$ is a Chebyshev polynomial of the $n^{\mathrm{th}}$ order
 
+	Assuming the same parameters as before along with a ripple of $\SI{0.1}{\decibel}$, we get
+	\begin{align}
+		\epsilon = \sqrt{10^{\frac{\delta}{10}} - 1} \approx 0.15
+	\end{align}
 
-\item Design a circuit for your Chebyschev filter.
+	Also, assume that $f_c = f_p \implies \frac{f_s}{f_c} > 1$
+	\begin{align}
+		&A_s = -10\log_{10}\brak{1+\epsilon^{2}T_{n}^2\brak{\frac{f_s}{f_c}}} \\
+		\implies &T_{n}\brak{\frac{f_s}{f_c}} = \frac{\sqrt{10^{-\frac{A_s}{10}} - 1}}{\epsilon} \\
+		\implies &\cosh\brak{n\cosh^{-1}\brak{\frac{f_s}{f_c}}} = \frac{\sqrt{10^{-\frac{A_s}{10}} - 1}}{\epsilon}
+	\end{align}
 
+	Thus
+	\begin{align}
+		n = \frac{\cosh^{-1}\brak{\frac{\sqrt{10^{-\frac{A_s}{10}} - 1}}{\epsilon} }}{\cosh^{-1}\brak{\frac{f_s}{f_c}}} \approx 2.26
+	\end{align}
+
+	Hence, we choose a $3^{\mathrm{rd}}$ order Chebyshev filter
+
+\item Design a circuit for your Butterworth filter
+
+	\solution Using the table of normalized Butterworth coefficients, we can see that for a $2^{\mathrm{nd}}$ order Butterworth filter
+	\begin{align}
+		C_1 &= \SI{1.4142}{\farad} \\
+		L_2 &= \SI{1.4142}{\henry}
+	\end{align}
+
+	On denormalizing these values, we get
+	\begin{align}
+		C_1' &= \frac{C_1}{2\pi f_c} = \SI{2.89}{\milli\farad} \\
+		L_2' &= \frac{L_2}{2\pi f_c} = \SI{2.89}{\milli\henry}
+	\end{align}
+
+	\begin{figure}[!ht]
+    \centering
+    \begin{circuitikz}
+        \draw (0,0) to[short, o-o] (4,0);
+        \draw (1,0) to[C, l=\SI{2.89}{\milli\farad}] (1,2);
+        \draw (0,2) to [short, o-] (1,2)
+        		to [L, l=\SI{2.89}{\milli\henry}] (3.5,2)
+        		-- (4,2) to[short, -o] (4,2);
+    \end{circuitikz}
+    \caption{$2^{\mathrm{nd}}$ order Butterworth filter circuit}
+    \label{ckt:butter}
+	\end{figure}
+
+\item Design a circuit for your Chebyschev filter
+
+	\solution Using the table of normalized Chebyshev coefficients, we can see that for a $3^{\mathrm{rd}}$ order Chebyshev filter
+	\begin{align}
+		C_1 &= \SI{1.4328}{\farad} \\
+		L_2 &= \SI{1.5937}{\henry} \\
+		C_3 &= \SI{1.4328}{\farad}
+	\end{align}
+
+	On denormalizing these values, we get
+	\begin{align}
+		C_1' &= \frac{C_1}{2\pi f_c} = \SI{4.56}{\milli\farad} \\
+		L_2' &= \frac{L_2}{2\pi f_c} = \SI{5.07}{\milli\henry} \\
+		C_3' &= \frac{C_3}{2\pi f_c} = \SI{4.56}{\milli\farad}
+	\end{align}
+
+	\begin{figure}[!ht]
+    \centering
+    \begin{circuitikz}
+        \draw (0,0) to[short, o-o] (5,0);
+        \draw (0,2) to [short, o-] (1,2)
+        		to [L, l=\SI{5.07}{\milli\henry}] (3.5,2)
+        		-- (5,2) to[short, -o] (5,2);
+        \draw (1,0) to[C, l=\SI{4.56}{\milli\farad}] (1,2);
+        \draw (3.5,0) to[C, l=\SI{4.56}{\milli\farad}] (3.5,2);
+    \end{circuitikz}
+    \caption{$3^{\mathrm{rd}}$ order Chebyshev filter circuit}
+    \label{ckt:cheby}
+	\end{figure}
 
 \end{enumerate}
 
